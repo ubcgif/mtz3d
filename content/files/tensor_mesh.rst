@@ -3,7 +3,7 @@
 Tensor Mesh File
 ================
 
-Tensor meshes are output when creating Octree meshes (**LINK**) and are used in the creation of conductivity models. The format for tensor mesh files is as follows:
+The format for tensor mesh files is as follows:
 
 |
 | :ref:`nx<tensorFile_ln1>` :math:`\;` :ref:`ny<tensorFile_ln1>` :math:`\;` :ref:`nz<tensorFile_ln1>`

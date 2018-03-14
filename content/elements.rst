@@ -1,10 +1,12 @@
 .. _elements:
 
-Elements of the Program E3DMT
+Elements of the Program MTZ3D
 =============================
 
 Introduction
 ------------
+
+**INCOMPLETE**
 
 This section provides a description of each program in the E3DMT library.
 
@@ -20,10 +22,10 @@ This section provides a description of each program in the E3DMT library.
 		- interface_weights: Creates interface weights
 
 
-General Files for E3DMT Executables
+General Files for MTZ3D Executables
 -----------------------------------
 
-Here, we describe the formats of supplementary files used to run E3DMT executable files. The input files for each executable program are described in the :ref:`running the programs<running>` section.
+Here, we describe the formats of supplementary files used to run MTZ3D executable files. The input files for each executable program are described in the :ref:`running the programs<running>` section.
 
 
 .. toctree::
@@ -34,7 +36,6 @@ Here, we describe the formats of supplementary files used to run E3DMT executabl
     Observations File <files/obsFile>
     Topography File <files/topoFile>
     Tensor Mesh File <files/tensor_mesh>
-    Octree Mesh File <files/octree_mesh>
     Model File <files/model>
     Model and Face Weights Files <files/weights>
 

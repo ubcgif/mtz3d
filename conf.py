@@ -58,7 +58,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'e3dmt'
+project = u'mtz3d'
 copyright = u'2015-2017, UBC-GIF'
 author = u'UBC-GIF'
 
@@ -117,7 +117,7 @@ todo_include_todos = False
 
 # -- Edit on Github Extension ---------------------------------------------
 
-edit_on_github_project = 'ubcgif/e3dmt'
+edit_on_github_project = 'ubcgif/mtz3d'
 edit_on_github_branch = 'master'
 check_meta = False
 
@@ -223,7 +223,7 @@ html_show_copyright = True
 #html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'e3dmt'
+htmlhelp_basename = 'mtz3d'
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -245,7 +245,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  (master_doc, 'e3dmtManual.tex', u'e3dmt Documentation',
+  (master_doc, 'mtz3dManual.tex', u'mtz3d Documentation',
    u'UBC-GIF', 'manual'),
 ]
 
@@ -275,7 +275,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'e3dmtdoc', u'e3dmt Documentation',
+    (master_doc, 'mtz3ddoc', u'mtz3d Documentation',
      [author], 1)
 ]
 
@@ -289,8 +289,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  (master_doc, 'e3dmtdoc', u'e3dmt Documentation',
-   author, 'e3dmtdoc', 'One line description of project.',
+  (master_doc, 'mtz3ddoc', u'mtz3d Documentation',
+   author, 'mtz3ddoc', 'One line description of project.',
    'Miscellaneous'),
 ]
 

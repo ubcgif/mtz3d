@@ -3,8 +3,19 @@
 Background Theory
 =================
 
-This section aims to provide the user with a basic review of the physics, discretization, and optimization techniques used to solve the frequency domain quasi-static electromagnetics problem. It
-is assumed that the user has some background in these areas. For further reading see :cite:`Nabighian1991`.
+Introduction
+------------
+
+
+A time dependence of :math:`e^{-i\omega t}` is assumed.
+
+
+
+
+
+
+
+
 
 .. _theory_fundamentals:
 

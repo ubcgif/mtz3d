@@ -3,10 +3,10 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-ED3MT package
-==============
+MTZ3D package
+=============
 
-GRAV3D is a program library for carrying out forward modelling and inversion of surface, borehole, and airborne gravity data in 3D. The contents of this manual are as follows:
+MTZ3D is a program library for carrying out forward modelling and inversion of magnetotelluric and Z-axis tipper EM data. The contents of this manual are as follows:
 
 .. toctree::
     :numbered:
