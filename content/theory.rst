@@ -1,186 +1,277 @@
 .. _theory:
 
-Background theory
+Background Theory
 =================
 
-Introduction
-------------
+This section aims to provide the user with a basic review of the physics, discretization, and optimization techniques used to solve the frequency domain quasi-static electromagnetics problem. It
+is assumed that the user has some background in these areas. For further reading see :cite:`Nabighian1991`.
 
-The GRAV3D suite of algorithms, developed at the UBC Geophysical Inversion Facility, is used to invert gravimetric responses over a three dimensional distribution of density contrast, or anomalous density. This manual is designed so that geophysicists who are familiar with the gravity experiment, but who are not necessarily versed in the details of inverse theory, can use the codes and invert their data. In the following, we describe the basics of the algorithm, but readers are referred to :cite:`LiOldenburg98` for an in-depth discussion of various aspects of the algorithm. Note that an understanding of these components is necessary for the user to have a global view of the algorithms and to use the program library to its fullest extent. 
+.. _theory_fundamentals:
 
-A gravity experiment involves measuring the vertical components of the gravity field produced by anomalous (either excess or deficient) mass beneath the surface. A distribution of anomalous mass, characterized by anomalous density :math:`\rho(x, y, z)`, produces its own gravity field, :math:`\mathbf{g}_s`, which is superimposed on the ambient gravity field. By measuring the resultant field and removing the ambient field from the measurements through numerical processing, one obtains the field due to the anomalous mass.
+Fundamental Physics
+-------------------
 
-The vertical component of the gravity field produced by the density :math:`\rho(x, y, z)` is given by
-
-.. _gzfield_:
-.. math:: 
-    g_z(\mathbf{r}_o)= \gamma\int\limits_V \rho(\mathbf{r})\frac{z-z_o}{\left | \mathbf{r}-\mathbf{r}_o \right |^3} dv,
-    :label: gzfield
-
-where :math:`\mathbf{r}_o = (x_o,y_o,z_o)` is the vector denoting the observation location and :math:`\mathbf{r} = (x,y,z)` is the source location. The volume of the anomalous mass is :math:`V` and :math:`\gamma` is the gravitational constant. Here we have adopted a Cartesian coordinate system having its origin on the earth's surface and the :math:`z-`\ axis pointing vertically downward. In the following, we outline the basics of the forward and inverse procedures used by the GRAV3D program library.
-
-
-Forward Modelling
------------------
-
-Forward modelling of gravity data is a linear problem and can be carried out by performing the integration in equation [eq:gzfield]. We divide
-the region of interest into a set of 3D prismatic cells by using a 3D orthogonal mesh and assume a constant density contrast within each cell. We discretize the density contrast model in this manner since it is best suited for our inversion methodology. Given such a discretization, the gravity field at the :math:`i^{th}` location can be written as:
-
-.. _fwdata_:
-
-.. math:: 
-     \begin{aligned}
-     d_i\equiv g_z(\mathbf{r}_{oi}) \\
-     = \overset{M}{\underset{j=1}{\sum}}\rho_j\left \{ \gamma\int\limits_{\Delta V_j}\frac{z-z_o}{\left | \mathbf{r}-\mathbf{r}_{oi} \right |^3}dv \right \}, \\
-     \equiv \overset{M}{\underset{j=0}{\sum}}\rho_j G_{ij}.
-     \end{aligned}
-     :label: fwdata
-
-
-In equation :eq:`fwdata`, :math:`\rho_j` and :math:`\Delta V_j` are the anomalous density and volume of the :math:`j^{th}` cell, :math:`d_i` is introduced as a generic symbol for the :math:`i^{th}` datum, and :math:`G_{ij}`, defined by the expression in brackets, quantifies the contribution of the :math:`j^{th}` cell to the :math:`i^{th}` datum. The solution for the integral in equation :eq:`fwdata` can be found in :cite:`Nagy66` and we have adopted the solution by :cite:`Haaz53` here.
-
-Inversion methodology
----------------------
-
-Let the set of extracted anomaly data be :math:`\mathbf{d} = (d_1,d_2,...,d_N)^T` and the density contrast of cells in the model be :math:`\mathbf{\rho} = (\rho_1,\rho_2,...,\rho_M)^T`. The two are related by the sensitivity matrix
-
-.. _sens_:
-.. math::
-     \mathbf{d}=\mathbf{G}\mathbf{\rho}.
-     :label: sens
-
-The matrix has elements :math:`g_{ij}` which quantify the contribution to the :math:`i^{th}` datum due to a unit density in the :math:`j^{th}` cell. The program performs the calculation of the sensitivity matrix, which is to be used by the subsequent inversion. The sensitivity matrix provides the forward mapping from the model to the data during the entire inverse process. We will discuss its efficient representation via the wavelet transform in a separate section. 
-
-For the inversion, the first question that arises concerns definition of the "model". We choose density contrast, :math:`\rho`, as the model for since the anomalous field is directly proportional to the density contrast. The inverse problem is formulated as an optimization problem where a global objective function, :math:`\phi`, is minimized subject to the constraints in equation :eq:`sens`. The global objective functions consists of two components: a model objective function, :math:`\phi_m`, and a data misfit function, :math:`\phi_d`, such that
-
-.. _globphi_:
-.. math::
-    \begin{aligned}
-    \min \phi = \phi_d+\beta\phi_m \\
-    \mbox{s. t. } \rho^l\leq \rho \leq \rho^u, \nonumber
-    \end{aligned}
-    :label: globphi
-
-where :math:`\beta` is a trade off parameter that controls the relative importance of the model smoothness through the model objective function and data misfit function. When the standard deviations of data errors are known, the acceptable misfit is given by the expected value :math:`\phi_d` and we will search for the value of :math:`\beta` via an L-curve criterion :cite:`Hansen00` that produces the expected misfit. Otherwise, a user-defined value is used. Bound are imposed through the projected gradient method so that the recovered model lies between imposed lower (:math:`\rho^l`) and upper (:math:`\rho^u`) bounds.
-
-We next discuss the construction of a model objective function which, when minimized, produces a model that is geophysically interpretable. The objective function gives the flexibility to incorporate as little or as much information as possible. At the very minimum, this function drives the solution towards a reference model :math:`\rho_o` and requires that the model be relatively smooth in the three spatial directions. Here we adopt a right handed Cartesian coordinate system with positive north and positive down. Let the model objective function be
-
-.. _mof:
-.. math::
-     \begin{aligned} \phi_m(\rho) &=& \alpha_s\int\limits_V w_s\left\{w(\mathbf{r})[\rho(\mathbf{r})-{\rho}_o] \right\}^2dv + \alpha_x\int\limits_V w_x \left\{\frac{\partial w(\mathbf{r})[\rho(\mathbf{r})-{\rho}_o]}{\partial x}\right\}^2dv \\ \nonumber
-     &+& \alpha_y\int\limits_V w_y\left\{\frac{\partial w(\mathbf{r})[\rho(\mathbf{r})-{\rho}_o]}{\partial y}\right\}^2dv +\alpha_z\int\limits_V\ w_z\left\{\frac{\partial w(\mathbf{r})[\rho(\mathbf{r})-{\rho}_o]}{\partial z}\right\}^2dv, \end{aligned}
-     :label: mof
-
-where the functions :math:`w_s`, :math:`w_x`, :math:`w_y` and :math:`w_z` are spatially dependent, while :math:`\alpha_s`, :math:`\alpha_x`, :math:`\alpha_y` and :math:`\alpha_z` are coefficients, which affect the relative importance of different components in the objective function. The reference model is given as :math:`\rho_o` and :math:`w(\mathbf{r})` is a generalized depth weighting function. The purpose of this function is to counteract the geometrical decay of the sensitivity with the distance from the observation location so that the recovered density contrast is not concentrated near the observation locations. The details of the depth weighting function will be discussed in the next section.
-
-The objective function in equation :eq:`mof` has the flexibility to incorporate many types of prior knowledge into the inversion. The reference model may be a general background model that is estimated from previous investigations or it will be a zero model. The reference model would generally be included in the first component of the objective function but it can be removed if desired from the remaining terms; often we are more confident in specifying the value of the model at a particular point than in supplying an estimate of the gradient. The choice of whether or not to include :math:`\rho_o` in the derivative terms can have significant effect on the recovered model as shown through the synthetic example. The relative closeness of the final model to the reference model at any location is controlled by the function :math:`w_s`. For example, if the interpreter has high confidence in the reference model at a particular region, he can specify :math:`w_s` to have increased amplitude there compared to other regions of the model. The weighting functions :math:`w_x`, :math:`w_y`, and :math:`w_z` can be designed to enhance or attenuate gradients in various regions in the model domain. If geology suggests a rapid transition zone in the model, then a decreased weighting on particular derivatives of the model will allow for higher gradients there and thus provide a more geologic model that fits the data.
-
-Numerically, the model objective function in equation :eq:`mof` is discretized onto the mesh defining the density contrast model using a finite difference approximation. This yields:
-
-.. _modobjdiscr_:
-.. math::
-    \begin{aligned}
-    \phi_m(\mathbf{\rho}) = (\mathbf{\rho}-\mathbf{\rho}_o)^T(\alpha_s \mathbf{W}_s^T\mathbf{W}_s+\alpha_x \mathbf{W}_x^T\mathbf{W}_x+\alpha_y \mathbf{W}_y^T\mathbf{W}_y+\alpha_z \mathbf{W}_z^T\mathbf{W}_z)(\mathbf{\rho}-\mathbf{\rho}_o), \nonumber\\
-    \equiv(\mathbf{\rho}-\mathbf{\rho}_o)^T\mathbf{W}_m^T\mathbf{W}_m(\mathbf{\rho}-\mathbf{\rho}_o), \nonumber\\
-    =\left \| \mathbf{W}_m(\mathbf{\rho}-\mathbf{\rho}_o) \right \|^2,\end{aligned}
-    :label: modobjdiscr
-
-
-where :math:`\mathbf{\rho}` and :math:`\mathbf{\rho}_o` are :math:`M`-length vectors representing the recovered and reference models, respectively. Similarly, there is an option to remove to the reference model from the spatial derivatives in equation :eq:`modobjdiscr` such that
-
-.. _modobjdiscrOut_:
-.. math::
-     \begin{aligned}
-     \phi_m(\mathbf{\rho}) = (\mathbf{\rho}-\mathbf{\rho}_o)^T(\alpha_s \mathbf{W}_s^T\mathbf{W}_s)(\mathbf{\rho}-\mathbf{\rho}_o) + \mathbf{\rho}^T(\alpha_x \mathbf{W}_x^T\mathbf{W}_x+\alpha_y \mathbf{W}_y^T\mathbf{W}_y+\alpha_z \mathbf{W}_z^T\mathbf{W}_z)\mathbf{\rho}, \nonumber \\
-     \equiv (\mathbf{\rho}-\mathbf{\rho}_o)^T\mathbf{W}_s^T\mathbf{W}_s(\mathbf{\rho}-\mathbf{\rho}_o) + \mathbf{\rho}^T\mathbf{W}_m^T\mathbf{W}_m\mathbf{\rho}, \nonumber\\
-     =\left \| \mathbf{W}_s(\mathbf{\rho}-\mathbf{\rho}_o) + \mathbf{W}_m\mathbf{\rho}\right \|^2.
-     \end{aligned}
-     :label: modobjdiscrOut
-
-In the previous two equations, the individual matrices :math:`\mathbf{W}_s`, :math:`\mathbf{W}_x`, :math:`\mathbf{W}_y`, and :math:`\mathbf{W}_z` are straight-forwardly calculated once the model mesh and the weighting functions :math:`w(\mathbf{r})` and :math:`w_s` , :math:`w_x`, :math:`w_y`, :math:`w_z` are defined. The cumulative matrix :math:`\mathbf{W}_m^T\mathbf{W}_m` is then formed for the chosen configuration.
-
-The next step in setting up the inversion is to define a misfit measure. Here we use the :math:`l_2`-norm measure
-
-.. _phid_:
-.. math::
-    \phi_d = \left\| \mathbf{W}_d(\mathbf{G}\mathbf{\rho}-\mathbf{d})\right\|^2.
-    :label: phid
-
-For the work here, we assume that the contaminating noise on the data is independent and Gaussian with zero mean. Specifying :math:`\mathbf{W}_d` to be a diagonal matrix whose :math:`i^{th}` element is :math:`1/\sigma_i`, where :math:`\sigma_i` is the standard deviation of the :math:`i^{th}` datum makes :math:`\phi_d` a chi-squared distribution with :math:`N` degrees of freedom. The optimal data misfit for data contaminated with independent, Gaussian noise has an expected value of :math:`E[\chi^2]=N`, providing a target misfit for the inversion. We now have the components to solve the inversion as defined in equation :eq:`globphi`.
-
-To solve the optimization problem when constraints are imposed we use the projected gradients method :cite:`CalamaiMore87,Vogel02`. This technique forces the gradient in the Krylov sub-space minimization (in other words a step during the conjugate gradient process) to zero if the proposed step would make a model parameter exceed the bound constraints. The result is a model that reaches the bounds, but does not exceed them. This method is computationally faster than the log-barrier method because (1) model parameters on the bounds are neglected for the next iteration and (2) the log-barrier method requires the calculation of a barrier term. Previous versions of  used the logarithmic barrier method :cite:`Wright97,NocedalWright99`.
-
-The weighting function is generated by the program that is in turn given as input to the sensitivity generation program . This gives the user full flexibility in using customized weighting functions. This program allows user to specify whether to use a generalized depth weighting or a distance-based weighting that is useful in regions of largely varying topography. Distance weighting is required to be used when borehole data are present.
-
-Depth Weighting and Distance Weighting
---------------------------------------
-
-It is a well-known fact that vertical gravity data have no inherent depth resolution. A numerical consequence of this is that when an inversion is performed, which minimizes :math:`\int m(\mathbf{r})^2 dv`, subject to fitting the data, the constructed density contrast is concentrated close to the observation locations. This is a direct manifestation of the kernel's decay with the distance between the cell and observation locations. Because of the rapidly diminishing amplitude, the kernels of gravity data are not sufficient to generate a function, which possess significant structure at locations that are far away from observations. In order to overcome this, the inversion requires a weighting to counteract this natural decay. Intuitively, such a weighting will be the inverse of the approximate geometrical decay. This give cells at all locations equal probability to enter into the solution with a non-zero density contrast.
-
-.. _depthWeight:
-
-Depth weighting for surface or airborne data
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The sensitivity decays predominantly as a function of depth for surface data. Numerical experiments indicate that a function of the form :math:`(z+z_o)^{-2}` closely approximates the kernel's decay directly under the observation point provided that a reasonable value is chosen for :math:`z_o`. The value of 2 in the exponent is consistent with the fact that, to first order, a cuboidal cell acts like a dipole source whose magnetic field decays as inverse distance cubed. The value of :math:`z_o` can be obtained by matching the function 1/\ :math:`(z+z_o)^2` with the field produced at an observation point by a column of cells. Thus we use a depth weighting function of the form
-
-.. math:: w(\mathbf{r}_j)=\left[\frac{1}{\Delta z_{j}}\int\limits_{\Delta z_{ij}}\frac{dz}{(z+z_o)^\alpha}\right]^{1/2}, ~~ j=1,...,M.
-     :label: depthw
-
-For the inversion of surface data, where :math:`\alpha=2`, :math:`\mathbf{r}_j` is used to identify the :math:`j^{th}` cell, and :math:`\Delta z_j` is its thickness. This weighting function is normalized so that the maximum value is unity. Numerical tests indicate that when this weighting is used, the susceptibility model constructed by minimizing the model objective function in equation [eq:mof], subject to fitting the data, places the recovered anomaly at approximately the correct depth.
-
-If the data set involves highly variable observation heights the normal depth weighting function might not be most suitable. Distance weighting used for borehole data may be more appropriate as explained in the next section.
-
-.. _distWeight:
-
-Distance weighting for borehole data
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-For data sets that contain borehole measurements, the sensitivities do not have a predominant decay direction, therefore a weighting function that varies in three dimensions is needed. We generalize the depth weighting used in surface data inversion to form such a 3D weighting function called distance weighting: 
+Maxwell's equations provide the starting point from which an understanding of how electromagnetic
+fields can be used to uncover the substructure of the Earth. In the frequency domain Maxwell's
+equations are:
 
 .. math::
-      w(\mathbf{r}_j)=\frac{1}{\sqrt{\Delta V_{j}}} \left\{\sum_{i=1}^{N}\left[\int\limits_{\Delta V_{j}}\frac{dv}{(R_{ij}+R_o)^\alpha}\right]^{2}\right\}^{1/4}, ~~j=1,...,M,
-      :label: distw
+	\begin{align}
+		&\nabla \times \mathbf{E} + i\omega\mu \mathbf{H} = 0 \\
+		&\nabla \times \mathbf{H} - \sigma \mathbf{E} = \mathbf{S}
+	\end{align}
+	:label:
 
-where :math:`\alpha=2`, :math:`V_j` is the volume of :math:`j^{th}` cell, :math:`R_{ij}` is the distance between a point within the source volume and the :math:`i^{th}` observation, and :math:`R_o` is a small constant used to ensure that the integral is well-defined (chosen to be a quarter of the smallest cell dimension). This weighting function is also normalized to have a maximum value of unity. For inversion of borehole data, it is necessary to use this more general weighting. This weighting function is also advantageous if surface data with highly variable observation heights are inverted.
+where :math:`\mathbf{E}` and :math:`\mathbf{H}` are the electric and magnetic fields, s is some external source, and :math:`\mu`, :math:`\sigma` and :math:`\omega` are the magnetic permeability, conductivity, and angular frequency respectively. This formulation assumes a quasi-static mode so that the system can be viewed as a diffusion equation (Weaver, 1994; Ward and Hohmann, 1988 in :cite:`Nabighian1991`). By doing so, some difficulties arise when
+solving the system;
 
+	- the curl operator has a non-trivial null space making the resulting linear system highly ill-conditioned
+	- the conductivity :math:`\sigma` varies over several orders of magnitude
+	- the fields can vary significantly near the sources but smooth out at distance requiring high resolution near sources
 
-.. _waveletSection:
+.. _theory_nsem:
 
-Wavelet Compression of Sensitivity Matrix
------------------------------------------
+Natural Sources: MT and ZTEM
+----------------------------
 
-The two major obstacles to the solution of a large scale magnetic inversion problem are the large amount of memory required for storing the sensitivity matrix and the CPU time required for the application of the sensitivity matrix to model vectors. The  program library overcomes these difficulties by forming a sparse representation of the sensitivity matrix using a wavelet transform based on compactly supported, orthonormal wavelets. For more details, the users are referred to :cite:`LiOldenburg03,LiOldenburg10`. In the following, we give a brief description of the method necessary for the use of the GRAV3D library.
-
-Each row of the sensitivity matrix in a 3D magnetic inversion can be treated as a 3D image and a 3D wavelet transform can be applied to it. By the properties of the wavelet transform, most transform coefficients are nearly or identically zero. When coefficients of small magnitudes are discarded (the process of thresholding), the remaining coefficients still contain much of the necessary information to reconstruct the sensitivity accurately. These retained coefficients form a sparse representation of the sensitivity in the wavelet domain. The need to store only these large coefficients means that the memory requirement is reduced. Further, the multiplication of the sensitivity with a vector can be carried out by a sparse multiplication in the wavelet domain. This greatly reduces the CPU time. Since the matrix-vector multiplication constitutes the core computation of the inversion, the CPU time for the inverse solution is reduced accordingly. The use of this approach increases the size of solvable problems by nearly two orders of magnitude.
-
-Let :math:`\mathbf{G}` be the sensitivity matrix and :math:`\mathcal{W}` be the symbolic matrix-representation of the 3D wavelet transform. Then applying the transform to each row of :math:`\mathbf{G}` and forming a new matrix consisting of rows of transformed sensitivity is equivalent to the following operation:
-
-.. math::
-     \widetilde{\mathbf{G}}=\mathbf{G}\mathcal{W}^T,
-     :label: senswvt
-
-where :math:`\widetilde{\mathbf{G}}` is the transformed matrix. The thresholding is applied to individual rows of :math:`\mathbf{G}` by the following rule to form the sparse representation :math:`\widetilde{\mathbf{G}}^S`,
-
-.. math::
-     \widetilde{g}_{ij}^{s}=\begin{cases} \widetilde{g}_{ij} & \mbox{if } \left|\widetilde{g}_{ij}\right| \geq \delta _i \\
-     0 & \mbox{if } \left|\widetilde{g}_{ij}\right| < \delta _i
-     \end{cases}, ~~ i=1,\ldots,N,
-     :label: elemg
-
-
-where :math:`\delta _i` is the threshold level, and :math:`\widetilde{g}_{ij}` and :math:`\widetilde{g}_{ij}^{s}` are the elements of :math:`\widetilde{\mathbf{G}}` and :math:`\widetilde{\mathbf{G}}^S`, respectively. The threshold level :math:`\delta _i` are determined according to the allowable error of the reconstructed sensitivity, which is measured by the ratio of norm of the error in each row to the norm of that row, :math:`r_i(\delta_i)`. It can be evaluated directly in the wavelet domain by the following expression:
-
-.. math:: 
-    r_i(\delta_i)=\sqrt{\frac{\underset{\left | {\widetilde{g}_{ij}} \right |<\delta_i}\sum{\widetilde{g}_{ij}}^2}{\underset{j}\sum{\widetilde{g}_{ij}^2}}}, ~~i=1,\ldots,N,
-    :label: rhoi
-
-
-Here the numerator is the norm of the discarded coefficients and the denominator is the norm of all coefficients. The threshold level :math:`\delta_{i_o}` is calculated on a representative row, :math:`i_o`. This threshold is then used to define a relative threshold :math:`\epsilon =\delta_{i_{o}}/ \underset{j}{\max}\left | {\widetilde{g}_{ij}} \right |`. The absolute threshold level for each row is obtained by
+The sources in the magnetotelluric (MT) and Z-axis tipper elecromagnetic (ZTEM) methods are modeled as plain waves originating
+from natural phenomenon. These waves can be of very low frequency (< 1 Hz) and very high
+energy, making it possible to image very deep targets. This also implies that the source term is
+zero inside the domain of interest, and therefore the source term on the boundaries becomes very
+important. For natural source electromagnetic (NSEM) problems, we solve the following system:
 
 .. math::
-     \delta_i = \epsilon \underset{j}{\max}\left | {\widetilde{g}_{ij}} \right|, ~~i=1,\ldots,N.
-     :label: deltai
+	\begin{align}
+		&\nabla \times \mathbf{E} + i\omega\mu \mathbf{H} = 0 \\
+		&\nabla \times \mathbf{H} - \sigma \mathbf{E} = 0 \\
+		&\mathbf{H} \times \mathbf{\hat n} \big |_{\partial \Omega} = \mathbf{H_0} \times \mathbf{\hat n}
+	\end{align}
+	:label: NSEM_system
 
-The program that implements this compression procedure is GZSEN3D. The user is asked to specify the relative error :math:`r^*` and the program will determine the relative threshold level :math:`\delta_i`. Usually a value of a few percent is appropriate for :math:`r^*`. When both surface and borehole data are present, two different relative threshold levels are calculated by choosing a representative row for surface data and another for borehole data. For experienced users and ones that are re-inverting the data, the program also allows the direct input of the relative threshold level.
+where :math:`\partial \Omega` denotes the boundary, :math:`\mathbf{\hat n}` is the unit vector perpendicular to the boundary and :math:`\mathbf{H_0}` is the magnetic field solution in free-space.
+The source is still the main difficulty in this method as it is unknown. To deal with this, consider the case where the Earth is a uniform half-space with a plane surface. If the source field is assumed
+to be homogeneous, infinite in dimension, and is located at infinity, then the plane waves impinging on the Earth's surface travel in the z-direction and have components :math:`E_x` and :math:`H_y` only. In this case, the electric field is defined by the following Helmholtz equation:
+
+.. math::
+	\frac{\partial^2 E_x}{\partial z^2} = k^2 E_x \;\;\; \textrm{s.t.} \;\;\; k^2 = i\mu\omega\sigma
+	:label: Helmholtz_E
+
+and the relationship between :math:`E_x` and :math:`H_y` is given by:
+
+.. math::
+	H_y = -\frac{i}{\omega\mu} \frac{\partial E_x}{\partial z}
+	:label:
+
+The solution to :eq:`Helmholtz_E` takes the form:
+
+.. math::
+	E_x = Q e^{-kz}
+	:label:
+
+where :math:`Q` is some constant. Taking the ratio of the electric and magnetic fields measured at the surface
+gives:
+
+.. math::
+	Z = \frac{E_x}{H_y} = \frac{i\omega \mu}{k} = \sqrt{\dfrac{i\omega\mu}{\sigma}}
+	:label: impedance_hs
+
+
+This implies that conductivity :math:`\sigma` of the Earth can be determined by taking measurements of the
+field components, and therefore the impedance constitutes the basic MT response function, or data.
+A 1D layered Earth model can be used to compute the source wave components by iteratively propagating a plane wave from the surface to depth.
+
+
+MT Data
+^^^^^^^
+
+For a 3-dimensional Earth the magnetotelluric data are defined as the ratio of the electric and magnetic field components in both the x and y directions for 2 polarizations, also know
+as the impedance tensor :math:`\mathbf{Z}`, where:
+
+.. math::
+	\mathbf{ZH} = \mathbf{E}
+	:label:
+
+such that:
+
+.. math::
+	\begin{bmatrix} Z_{11} & Z_{12} \\ Z_{21} & Z_{22} \end{bmatrix}
+	\begin{bmatrix} H_{x1} & H_{x2} \\ H_{y1} & H_{y2} \end{bmatrix}=
+	\begin{bmatrix} E_{x1} & E_{x2} \\ E_{y1} & E_{y2} \end{bmatrix}
+	:label: impedance_tensor
+
+
+
+
+
+ZTEM Data
+^^^^^^^^^
+
+The Z-Axis Tipper Electromagnetic Technique (ZTEM) (Lo2008) records
+the vertical component of the magnetic field everywhere above the survey area while recording
+the horizontal fields at a ground base reference station. In the same manner as demonstrated for
+MT, transfer functions are computed which relate the vertical fields to the ground based horizontal
+fields. This relation is given by:
+
+.. math::
+	H_z(r) = T_{zx}(r,r_0)H_x(r_0) + T_{zy}(r,r_0)H_y(r_0)
+	:label:
+
+where :math:`r` is the location of the vertical field and :math:`r_0` is the location of the ground base station. :math:`T_{zx}` and :math:`T_{zy}` are the vertical field transfer functions, from z to x and z to y respectively. The transfer
+functions are given by:
+
+.. math::
+	\begin{bmatrix} T_x \\ T_y \end{bmatrix} =
+	\Big ( H_x^{(r)}H_y^{(r_0)} - H_x^{(r_0)}H_y^{(r)} \Big )^{-1}
+	\begin{bmatrix} - H_y^{(r)}H_z^{(r_0)} + H_y^{(r_0)}H_z^{(r)} \\ H_x^{(r)}H_z^{(r_0)} - H_x^{(r_0)}H_z^{(r)} \end{bmatrix}
+	:label: transfer_fcn
+
+Maxwell's equations and the source fields then discretized on an Octree mesh in order to solve the forward and inverse problems.
+
+
+
+Octree Mesh
+-----------
+
+By using an Octree discretization of the earth domain, the areas near sources and likely model
+location can be give a higher resolution while cells grow large at distance. In this manner, the
+necessary refinement can be obtained without added computational expense. Figure(2) shows an
+example of an Octree mesh, with nine cells, eight of which are the base mesh minimum size.
+
+
+.. figure:: images/OcTree.png
+     :align: center
+     :width: 700
+
+
+When working with Octree meshes, the underlying mesh is defined as a regular 3D orthogonal grid where
+the number of cells in each dimension are :math:`2^{m_1} \times 2^{m_2} \times 2^{m_3}`, with grid size :math:`h`. This underlying mesh
+is the finest possible, so that larger cells have lengths which increase by powers of 2 multiplied by
+:math:`h`. The idea is that if the recovered model properties change slowly over a certain volume, the cells
+bounded by this volume can be merged into one without losing the accuracy in modeling, and are
+only refined when the model begins to change rapidly.
+
+
+
+Discretization of Operators
+---------------------------
+
+The operators div, grad, and curl are discretized using a finite volume formulation. Although div and grad do not appear in :eq:`impedance_tensor`, they are required for the solution of the system. The divergence
+operator is discretized in the usual flux-balance approach, which by Gauss' theorem considers the current flux through each face of a cell. The nodal gradient (operates on a function with values on the nodes) is obtained by differencing adjacent nodes and dividing by edge length. The discretization of the curl operator is computed similarly to the divergence operator by utilizing Stokes theorem by summing the magnetic field components around the edge of each face. Please
+see :cite:`Haber2012` for a detailed description of the discretization process.
+
+
+
+Forward Problem
+---------------
+
+The solutions for the :math:`\mathbf{H}` and :math:`\mathbf{E}` fields are computed iteratively using the stabilized conjugate gradient method (BiCGstab). Because of the null space of the curl operator a discrete Helmholtz decomposition is used to write the electric field as
+
+.. math::
+	\mathbf{E} = \mathbf{A} + \nabla \phi
+	:label:
+
+where :math:`\mathbf{A}` is a vector potential and :math:`\phi` is a scalar potential. For MT or ZTEM data, :eq:`NSEM_system` is solved by eliminating the curl operator and solving for :math:`\mathbf{A}` and :math:`\phi`.
+
+The forward problem of simulating data can now be written in the following form. Let :math:`\mathbf{D(m)}` be the discrete linear system obtained by the discretization of Maxwell's equations, where :math:`\mathbf{m} = log(:mathbf{\sigma})`.
+The electric fields :math:`U` on the edges everywhere in the mesh are then:
+
+.. math::
+	U(\sigma) = \mathbf{D(m)^{-1} S}
+	:label:
+
+where :math:`\mathbf{S} = (s_1,s_2)` is the source for 2 polarizations and is approximated from a 1D MT solution and
+interpolated to the entire mesh. The fields at the receivers locations are then
+
+.. math::
+	\begin{align}
+	\mathbf{H} = Q_h u \\
+	\mathbf{E} = Q_e u
+	\end{align}
+
+where
+
+.. math::
+	Q_h = \dfrac{1}{i\omega\mu_0} Q_c A_{f2c} CURL
+	:label:
+
+and
+
+.. math::
+	Q_e = Q_c A_{e2c}
+	:label:
+
+The matrix :math:`Q_c` is an interpolation matrix from cell centers to receiver locations, :math:`A_{f2c}` averages from faces to cell centers, and :math:`A_{e2c}` averages from edges to cell centers.
+
+.. _theory_inv:
+
+Inverse Problem
+---------------
+
+Solving the non-linear EM inverse problem for electric conductivity is akin to minimizing the
+following objective function:
+
+
+.. math::
+	\Phi_{mis} (\mathbf{m}) = \frac{1}{2} \bigg \| \Sigma \odot \big ( \mathbf{D}(\sigma) - \mathbf{d^{obs}} \big ) \big \|^2_2
+	:label:
+
+
+where :math:`\Sigma` is a matrix of the inverse standard deviation for each measured data point :math:`\mathbf{d^{obs}}`. Due to the ill-posedness of the problem, there are no stable solutions and a regularization is needed. The regularization used penalizes for both smoothness, and likeness to a reference model :math:`\mathbf{m_{ref}}` supplied by the user.
+
+.. math::
+	\Phi_{reg} (\mathbf{m-m_{ref}}) = \frac{1}{2} \big \| \nabla (\mathbf{m - m_{ref}}) \big \|^2_2
+	:label:
+
+An important consideration comes when discretizing the regularization. The gradient operates on
+cell centered variables in this instance. Applying a short distance approximation is second order
+accurate on a domain with uniform cells, but only :math:`\mathcal{O}(1)` on areas where cells are non-uniform. To
+rectify this a higher order approximation is used (:cite:`Haber2012`). The discrete regularization
+operator can then be expressed as
+
+.. math::
+	\begin{align}
+	\Phi_{reg}(\mathbf{m}) &= \frac{1}{2} \int_\Omega \big | \nabla m \big |^2 dV \\
+	& \approx \frac{1}{2}  \beta \mathbf{ m^T G_c^T} \textrm{diag} (\mathbf{A_f^T v}) \mathbf{G_c m}
+	\end{align}
+	:label:
+
+where :math:`\mathbf{A_f}` is an averaging matrix from faces to cell centres, :math:`\mathbf{G}` is the cell centre to cell face gradient operator, and v is the cell volume For the benefit of the user, let :math:`\mathbf{WTW}` be the weighting matrix given by
+
+.. math::
+	\mathbf{WTW} = \beta \mathbf{ G_c^T} \textrm{diag}(\mathbf{A_f^T v}) \mathbf{G_c m} =
+	\begin{bmatrix} \mathbf{\alpha_x} & & \\ & \mathbf{\alpha_y} & \\ & & \mathbf{\alpha_z} \end{bmatrix} \big ( \mathbf{G_x^T \; G_y^T \; G_z^T} \big ) \textrm{diag} (\mathbf{v_f}) \begin{bmatrix} \mathbf{G_x} \\ \mathbf{G_y} \\ \mathbf{G_z} \end{bmatrix}
+	:label:
+
+where :math:`\alpha_i` for :math:`i=x,y,z` are diagonal matricies. In the code the WTW matrix is stored as a separate matrix so that individual model norm components can be calculated. Now, if a cell weighting is used it is applied to the entire norm, that is, there is a w for each cell.
+
+.. math::
+	\mathbf{WTW} = \textrm{diag} (w) \mathbf{WTW} \textrm{diag} (w)
+	:label:
+
+There is also the option of choosing a cell interface weighting. This allows for a weight on each cell FACE. The user must supply the weights (:math:`w_x, w_y, w_z` ) for each weighted cell. When the interface
+weighting option is chosen and the value is less than 1, a sharp discontinuity will be created. When
+the value is greater than 1, there will be a smooth transition. To prevent the inversion from putting
+"junk" on the surface, the top X and Y face weights should have a large value.
+
+.. math::
+	\mathbf{WTW} = \mathbf{\alpha_x G_x^T} \textrm{diag} (w_x v_f) \mathbf{G_x} + \mathbf{\alpha_y G_y^T} \textrm{diag} (w_y v_f) \mathbf{G_y} + \mathbf{\alpha_z G_z^T} \textrm{diag} (w_z v_f) \mathbf{G_z}
+	:label:
+
+The resulting optimization problem is therefore:
+
+.. math::
+	\begin{align}
+	&\min_m \;\; \Phi_{mis} (\mathbf{m}) + \beta \Phi_{reg}(\mathbf{m - m_{ref}}) \\
+	&\; \textrm{s.t.} \;\; \mathbf{m_L \leq m \leq m_H}
+	\end{align}
+	:label:
+
+where :math:`\beta` is a regularization parameter, and :math:`\mathbf{m_L}` and :math:`\mathbf{m_H}` are upper and lower bounds provided by some a prior geological information.
+A simple Gauss-Newton optimization method is used where the system of equations is solved using ipcg (incomplete preconditioned conjugate gradients) to solve for each G-N step. For more
+information refer again to :cite:`Haber2012` and references therein.
+
+
+
+
+
 

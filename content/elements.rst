@@ -1,37 +1,51 @@
 .. _elements:
 
-Elements of the program GRAV3D
-==============================
+Elements of the Program E3DMT
+=============================
 
 Introduction
 ------------
 
-The program library consists of the programs:
+This section provides a description of each program in the E3DMT library.
 
-#. **GZFOR3D**: performs forward modelling.
+	1. E3DMT Executable programs:
+		- MTcreate_octree_mesh_e3d: creates an octree mesh around the receiver array
+		- e3dMTfwd: Solves the forward problem. Computes the electric and magnetic response to a 3D conductivity model (fields, and impedance)
+		- e3dMTinv: Solves the inverse problem using a direct solver approach. Recovers a conductivity model by inverting MT and/or ZTEM data.
+		- e3dMTinv_iter: Solves the inverse problem using an iterative solver approach. Recovers a conductivity model by inverting MT and/or ZTEM data.
 
-#. **PFWEIGHT**: calculates depth or distance weighting function.
+	2. Octree utilities:
+		- blk3cell: Creates models from a set of blocks
+		- 3DModel2Octree: Converts models from tensor to Octree meshes
+		- interface_weights: Creates interface weights
 
-#. **GZSEN3D**: calculates sensitivity for the inversion.
 
-#. **GZINV3D**: performs 3D gravity inversion.
+General Files for E3DMT Executables
+-----------------------------------
 
-#. **GZPRE3D**: multiplies the sensitivity file by the model to get the predicted data. This rarely used utility multiplies a model by the sensitivity matrix in to produce the predicted data. This program is included so that users who are not familiar with the wavelet transform and the structure of can utilize the available sensitivity matrix to carry out model studies.
+Here, we describe the formats of supplementary files used to run E3DMT executable files. The input files for each executable program are described in the :ref:`running the programs<running>` section.
 
-Each of the above programs requires input files and the specification of parameters in order to run. However, some files are used by a number of programs. Before detailing the procedures for running each of the above programs, we first present information about these general files.
-
-General files for GRAV3D programs
----------------------------------
-
-There are seven general files which are used in GRAV3D. All are in ASCII text format. Input files can have any user-defined name. *Program output files have restricted file names that will be over-written if already in the directory*. Also the filename extensions are not important. Many prefer to use the filename convention so that files are more easily read and edited in the Windows environment. File and file locations may have spaces in the name or path, but it is discouraged. The file name (absolute or relative path) must be 500 characters or less in length. The files contain components of the inversion:
 
 .. toctree::
     :maxdepth: 1
 
-    Mesh <files/meshfile>
-    Topography <files/topo>
-    Observation/Location <files/obs>
-    Model <files/model>
-    Weighting <files/weight>
-    Active model <files/model>
+    Survey/Locations File <files/surveyFile>
+    Predicted Data File <files/preFile>
+    Observations File <files/obsFile>
+    Topography File <files/topoFile>
+    Tensor Mesh File <files/tensor_mesh>
+    Octree Mesh File <files/octree_mesh>
+    Model File <files/model>
+    Model and Face Weights Files <files/weights>
+
+
+
+
+
+
+
+
+
+
+
 
