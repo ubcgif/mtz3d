@@ -1,9 +1,9 @@
 .. _obsFile:
 
-Observations File
-=================
+Observation File
+================
 
-This file is input when inverting field-collected data. This file contains the survey information, field observations and data uncertainties. 
+The observation file contains all necessary survey information for running the inversion, including: data type, observation locations, frequencies, data and uncertainties. 
 
 .. note::
     - Bolded entries are fixed flags recognized by the Fortran codes and blue hyperlinked entries are values/regular expressions specified by the user
@@ -12,7 +12,7 @@ This file is input when inverting field-collected data. This file contains the s
 MT and ZTEM data
 ----------------
 
-If only MT, ZTEM or apparent resistivity and phase data are being inverted, the lines of an observations file with one or more transmitters is formatted as follows:
+If only MT, ZTEM or apparent resistivity and phase data are being inverted, the observation file is formatted as follows:
 
 | **DATATYPE** :math:`\;` :ref:`A<e3dmt_obs_ln1>`
 | **!IGNORE** :math:`\;` :ref:`B<e3dmt_obs_ln2>`
@@ -44,7 +44,7 @@ If only MT, ZTEM or apparent resistivity and phase data are being inverted, the 
 Joint MT and ZTEM
 -----------------
 
-If joint MT and ZTEM data are being inverted, the lines of an observations file with one or more transmitters is formatted as follows:
+If joint MT and ZTEM data are being inverted, the observation file is formatted as follows:
 
 | **DATATYPE** :math:`\;` :ref:`A<e3dmt_obs_ln1>`
 | **!IGNORE** :math:`\;` :ref:`B<e3dmt_obs_ln2>`

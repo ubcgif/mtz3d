@@ -1,16 +1,16 @@
-.. _e3dmt_fwd:
+.. _mtztem_fwd:
 
 Forward Modeling Program
 ========================
 
-The forward problem is solved using the executable program **e3dMTfwd.exe**. Parameters necessary for running the forward modeling code are set in the file **e3dMT_octree_fwd.inp**.
+The forward problem is solved using the executable program **MT3Dfwd.exe**. Parameters necessary for running the forward modeling code are set in the file **mt3dfwd.inp**. Currently, the MTZTEM package can only forward model MT data at one frequency at a time.
 
 Running the Program
 -------------------
 
-To run the forward modeling program, open a command line window. Type the path to the code **e3dMTfwd.exe**, followed by a space, followed by the path to the input file.
+To run the forward modeling program, open a command line window. Type the path to the code **MT3Dfwd.exe**, followed by a space, followed by the path to the input file named **mt3dfwd.inp**.
 
-.. figure:: images/run_e3dmt_fwd.png
+.. figure:: images/run_mtztem_fwd.png
      :align: center
      :width: 700
 
@@ -26,28 +26,32 @@ Units:
 **Output:**
 
     - **MT data:** Real and imaginary components of impedance tensor entries (V/A)
-    - **ZTEM data:** Real and imaginary components of transfer function entries (unitless)
+..    - **ZTEM data:** Real and imaginary components of transfer function entries (unitless)
 
 
 Input
 -----
 
 
-The lines of input file (**e3dMT_octree_fwd.inp**) are formatted as follows:
+The lines of input file (**mtztem_octree_fwd.inp**) are formatted as follows:
 
-| :ref:`OcTree Mesh<e3dmt_fwd_ln1>`
-| :ref:`Receiver Locations<e3dmt_fwd_ln2>`
-| :ref:`Real Conductivity<e3dmt_fwd_ln3>`
-| :ref:`Imaginary Conductivity<e3dmt_fwd_ln4>`
-| :ref:`1D Background Conductivity<e3dmt_fwd_ln5>`
-| :ref:`Background Susceptibility<e3dmt_fwd_ln6>`
-| :ref:`Topography<e3dmt_fwd_ln7>`
+|
+| :ref:`Frequency<mtztem_fwd_ln1>`
+| :ref:`Tensor Mesh<mtztem_fwd_ln2>`
+| :ref:`Conductivity Model<mtztem_fwd_ln3>`
+| :ref:`Background Susceptibility Model<mtztem_fwd_ln4>`
+| :ref:`Locations<mtztem_fwd_ln5>`
+| :ref:`droptol<mtztem_fwd_ln6>` :math:`\;` :ref:`tol<mtztem_fwd_ln6>` :math:`\;` :ref:`max_iter<mtztem_fwd_ln6>`
+| :ref:`Preconditioner Type<mtztem_fwd_ln7>`
+| :ref:`Fields Flag 1<mtztem_fwd_ln8>`
+| :ref:`Fields Flag 2<mtztem_fwd_ln9>`
+| :ref:`Data Options<mtztem_fwd_ln10>`
 |
 |
 
 
 
-.. figure:: images/e3dmt_fwd_input.png
+.. figure:: images/mtztem_fwd_input.png
      :align: center
      :width: 700
 
@@ -56,34 +60,47 @@ The lines of input file (**e3dMT_octree_fwd.inp**) are formatted as follows:
 
 **Line Descriptions:**
 
-.. _e3dmt_fwd_ln1:
+.. _mtztem_fwd_ln1:
 
-    - **OcTree Mesh:** file path to the OcTree mesh file
+    - **Frequency:** the frequency (in Hz) at which the fields and MT data are modeling
 
-.. _e3dmt_fwd_ln2:
+.. _mtztem_fwd_ln2:
 
-    - **Receiver Locations:** file path to the :ref:`survey file<surveyFile>`.
+    - **Tensor Mesh:** file path to the tensor mesh file
 
-.. _e3dmt_fwd_ln3:
+.. _mtztem_fwd_ln3:
 
-    - **Real Conductivity:** file path to the conductivity model. If complex conductivities are being used, this model represents real-valued conductivities.
+    - **Conductivity Model:** file path to the conductivity model.
 
-.. _e3dmt_fwd_ln4:
+.. _mtztem_fwd_ln4:
 
-    - **Imaginary Conductivity:** If the conductivity model used in the forward simulation is strictly real-valued, the user may enter "NO_IMAG_COND" on this line. Otherwise, the user enters the file path to the imaginary conductivity model.
+    - **Background Susceptibility Model:** The user may provide the file path to a background susceptibility model on this line. If a constant susceptibility is being used, "VALUE" may be entered and followed by the background susceptibility. For no background susceptibility, the flag "NO_SUS" is used.
 
-.. _e3dmt_fwd_ln5:
+.. _mtztem_fwd_ln5:
 
-    - **1D Background Conductivity:** The user may supply the file path to a `1D background conductivity model <http://em1dfm.readthedocs.io/en/latest/content/files/supporting.html#files-for-reference-and-starting-models>`__ . If a homogeneous background conductivity is being used, the user enters "VALUE" followed by a space and a numerical value; example "VALUE 0.01"
+    - **Receiver Locations:** file path to the :ref:`locations file<surveyFile>`.
 
-.. _e3dmt_fwd_ln6:
+.. _mtztem_fwd_ln6:
 
-    - **Background Susceptibility:** The user may provide the file path to a background susceptibility model on this line. If a constant susceptibility is being used, "VALUE" may be entered and followed by the background susceptibility. For no background susceptibility, the flag "NO_SUS" is used.
+    - **Solver parameters:**
+        - **droptol:** sets the threshold for dropping small term in the ILU factorization
+        - **tol:** sets tolerance for convergence
+        - **max_iter:** sets maximum number of iterations to find convergence
 
-.. _e3dmt_fwd_ln7:
+.. _mtztem_fwd_ln7:
 
-    - **Topography:** The user may supply the file path to an active cells model file or type "ALL_ACTIVE". The active cells model has values 1 for cells lying below the surface topography and values 0 for cells lying above.
+    - **Preconditioner Type:** This is specified using a flag value of *0* or *4*. If *0* is entered, a `symmetric successive over-relaxation <https://en.wikipedia.org/wiki/Symmetric_successive_over-relaxation>`__ (SSOR) preconditioner is used. If *4* is entered, a BLUGS preconditioner is used. In general the SSOR preconditioner uses less memory, but converges slower (is recommended for older computers and large problems). The Blugs provides faster convergence, but uses more memory.
 
+.. _mtztem_fwd_ln8:
+
+    - **Fields Flag 1:** This line indicates whether a complete forward modeling is performed, or whether field values have been previously computed and only impedances and/or apparent resistivities and phases need to be computed. If *1* is entered, the program computes the E and H fields everywhere. The user enters *0* followed by a set of EDI filenames separated by spaces if the fields have been previously computed; example "*1 e1.dat e2.dat h1.dat h2.dat*".
+
+.. _mtztem_fwd_ln9:
+
+
+
+
+.. _mtztem_fwd_ln10:
 
 
 .. figure:: images/fwd_results.png
@@ -93,12 +110,12 @@ The lines of input file (**e3dMT_octree_fwd.inp**) are formatted as follows:
      In-phase (left) and quadrature (right) components of impedance tensor element :math:`Z_{xy}` over the L-shaped conductor.
 
 
-.. _e3dmt_fwd_output:
+.. _mtztem_fwd_output:
 
 Output Files
 ------------
 
-The program **e3dMTfwd.exe** creates 2 output files:
+The program **mtztemfwd.exe** creates 2 output files:
 
     - **MT_data.txt:** data predicted using the conductivity model provided
 
