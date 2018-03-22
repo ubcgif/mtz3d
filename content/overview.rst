@@ -1,73 +1,36 @@
 .. _overview:
 
-E3DMT package overview
-======================
+MTZTEM package overview
+=======================
+
+.. note:: Henceforth the natural source tensor EM codes will be referred to as the *MTZTEM* package. Other previously used names for the same codes include *MT3D* and *MTZ3D*.
 
 Description
 -----------
 
-This manual provides instruction and background for the e3dMT program library for the forward
-modeling and inversion of magnetotelluric survey data. The e3dMT library is built in the same
-manner as e3d, so much of the background presented in this manual is identical to the e3d manual (**link**).
-In order to decrease computational time and increase accuracy by mesh refinement in areas of
-interest, e3d models are discretized on an Octree mesh. 
+The MTZTEM package is primarily designed to recover conductivity models on 3D tensor meshes through the inversion of magnetotelluric (MT) and/or Z-axis tipper EM (ZTEM) data. If necessary, this package can also be used to forward model both MT and ZTEM data. The data to be inverted can be either the elements of the impedance tensor, magnetivariational transfer functions (Tippers) or the associated apparent resistivities and phases. The inversion program can be run from the command line under LINUX, or MS-Windows or, in the MS Windows environment, using a graphical user interface (GUI). The UBC-GIF utility MeshTools3D is used to examine resulting 3D conductivity models.
 
+As of 2010, the code has been updated to work with transfer function data, along with impedance MT data and furthermore, the code has been parallelized with open MP and MPI. MPI parallelization was used for variety of frequency data and will be discussed below in greater detail, while open MP parallelization is used for two orthogonal source polarization directions for each frequency. Hence, for the frequency-based parallelization, the number of processors defined under MPI settings can not exceed the number of frequencies described in the data file. Each of these frequency-oriented processes will be further split up in two source polarization threads using the open MP environment.
 
-.. figure:: images/OcTree.png
-     :align: center
-     :width: 700
+Experienced users of inversion understand that fine tuning the parameters concerned with computational accuracy can affect the efficiency of convergence. In principle, one wants to compute all quantities as accurately as possible and solve the matrix systems exactly. Unfortunately that can lead to prohibitively large computational costs and so strategies that reduce the computations, and yet do not compromise the final model, are sought. For this reason there are two levels in which ZTEM_MTinv can be run. The first uses all default parameters. In the second, the user can adjust tolerance, maximum number of iterations, etc. to gain computational efficiency. In order to adjust these parameters in a meaningful way, the user needs to understand the basic structure of the code and the parameters that control the calculations. Therefore it is important to read the overview of background theory and to use the manual that follows to understand exactly what each parameter does.
 
-     2D (QuadTree) mesh discretization about a ring (left). Cell refinement for OcTree mesh (right).
-
-
-For ease of use the program library includes several utilities which generate a regular base mesh, enabling the user to construct initial
-or simulation models on a regular mesh and then convert to an octree mesh. From the users point of
-view the software operates in much the same way as previous GIF codes. This version is currently
-run through the command line only.
-
-The program library provides codes to do the following:
-
-   1. Construct models on a rectangular mesh, where each cell is assigned a constant value of conductivity, and transfers the model to an octree mesh.
-
-   2. Forward model electric and magnetic field anomaly responses to a 3D volume of contrasting conductivity, on and octree mesh.
-
-   3. Convert from and octree mesh to a regular base mesh.
-
-   4. Invert surface (MT), airborne (ZTEM) data to generate 3D conductivity models:
-   
-      - The inversion is solved as an optimization problem with the simultaneous goals of (i) minimizing an objective function dependent on the model and (ii) generating synthetic data that match observations to within a degree of misfit consistent with the statistics of those data.
-      - To counteract the inherent lack of information, the formulation incorporates reference model and smoothing by regularization.
-      - Capacity for the user to directionally weight smoothing and reference model influence as well as overall influence of regularization on objective function minimization. Explicit prior information may also take the form of upper and lower bounds on the conductivity contrast in any cell.
-      - The regularization parameter (controlling relative importance of objective function and misfit terms).
-
-
-The initial research underlying this program library was funded principally by the mineral industry consortium \Joint and Cooperative Inversion of Geophysical and Geological Data" (1991 -
-1997) which was sponsored by NSERC and the following 11 companies: BHP Minerals, CRA Exploration, Cominco Exploration, Falconbridge, Hudson Bay Exploration and Development, INCO
-Exploration & Technical Services, Kennecott Exploration Company, Newmont Gold Company,
-Noranda Exploration, Placer Dome, and WMC.
+The initial research underlying this program library was funded principally by the “IMAGE” consortium, of which the following companies were participants: AGIP, Anglo American, Billiton, Cominco, Falconbridge, INCO, MIM, Muskox Minerals, Newmont, Placer Dome and Rio Tinto, and from the Natural Sciences and Engineering Research Council of Canada (NSERC).
 
 Since then, improvements have been implemented as time and resources permit.
 
-E3DMT Program Library Content
------------------------------
 
-The main executable programs within the E3DMT program library are:
+MTZTEM Program Library Content
+------------------------------
 
-    - **MTcreate_octree_mesh_e3d:** Creates the OcTree used in forward simulations and inversions from survey data.
-    - **blk3cell:** Creates simple conductivity models on a core tensor mesh
-    - **3DModel2Octree:** Converts 3D conductivity on core mesh to OcTree mesh
-    - **e3dMTfwd:** Performs the forward simulation
-    - **e3dMTinv:** Inverts observed data in order to recover a conductivity model
+The program library provides the following codes:
 
-Also included are the following Octree utility programs:
+   - **ZTEM_MTinv.exe:** A parallelizable inversion code for inverting MT and/or ZTEM data at a multitude of frequencies
 
-      - create weight file
-      - face weights
-      - octree cell centre
-      - octreeTo3D
-      - refine octree
-      - re-mesh octree model
-      - surface electrodes
+   - **MTfwd.exe:** A forward modeling code from predicting MT data (no ZTEM) at a single frequency
+
+
+.. note:: To forward model MT and/or ZTEM data at a multitude of frequencies, simply run the inversion code and terminate after data are predicted for the starting model
+
 
 Licensing
 ---------
@@ -75,8 +38,8 @@ Licensing
 Licensing for commercial use is managed by distributors, not by the UBC-GIF research group.
 
 
-Installing E3DMT
-----------------
+Installing MTZTEM
+-----------------
 
 There is no automatic installer currently available for the e3dMT. Please follow the following steps in order to use the software:
 

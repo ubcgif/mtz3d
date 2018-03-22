@@ -3,283 +3,239 @@
 Background Theory
 =================
 
-Introduction
-------------
-
-
-A time dependence of :math:`e^{-i\omega t}` is assumed.
-
-
-
-
-
-
-
-
 
 .. _theory_fundamentals:
 
-Fundamental Physics
--------------------
+Forward Problem
+---------------
 
-Maxwell's equations provide the starting point from which an understanding of how electromagnetic
-fields can be used to uncover the substructure of the Earth. In the frequency domain Maxwell's
-equations are:
+Maxwell's equations provide the starting point from which an understanding of how electromagnetic fields can be used to uncover the substructure of the Earth. The sources in the magnetotelluric (MT) and Z-axis tipper elecromagnetic (ZTEM) methods are modeled as plain waves originating from natural phenomenon. These waves can be of very low frequency (< 1 Hz) and very high energy, making it possible to image very deep targets. This also implies that the source term is
+zero inside the domain of interest, and therefore the source term on the boundaries becomes very important. And in contrast to the controlled-source case, the forward-modelling problem for the NSEM case involves homogeneous equations with inhomogeneous boundary conditions.
 
-.. math::
-	\begin{align}
-		&\nabla \times \mathbf{E} + i\omega\mu \mathbf{H} = 0 \\
-		&\nabla \times \mathbf{H} - \sigma \mathbf{E} = \mathbf{S}
-	\end{align}
-	:label:
-
-where :math:`\mathbf{E}` and :math:`\mathbf{H}` are the electric and magnetic fields, s is some external source, and :math:`\mu`, :math:`\sigma` and :math:`\omega` are the magnetic permeability, conductivity, and angular frequency respectively. This formulation assumes a quasi-static mode so that the system can be viewed as a diffusion equation (Weaver, 1994; Ward and Hohmann, 1988 in :cite:`Nabighian1991`). By doing so, some difficulties arise when
-solving the system;
-
-	- the curl operator has a non-trivial null space making the resulting linear system highly ill-conditioned
-	- the conductivity :math:`\sigma` varies over several orders of magnitude
-	- the fields can vary significantly near the sources but smooth out at distance requiring high resolution near sources
-
-.. _theory_nsem:
-
-Natural Sources: MT and ZTEM
-----------------------------
-
-The sources in the magnetotelluric (MT) and Z-axis tipper elecromagnetic (ZTEM) methods are modeled as plain waves originating
-from natural phenomenon. These waves can be of very low frequency (< 1 Hz) and very high
-energy, making it possible to image very deep targets. This also implies that the source term is
-zero inside the domain of interest, and therefore the source term on the boundaries becomes very
-important. For natural source electromagnetic (NSEM) problems, we solve the following system:
+For natural source electromagnetic (NSEM) problems, we solve the following system in the frequency domain:
 
 .. math::
-	\begin{align}
-		&\nabla \times \mathbf{E} + i\omega\mu \mathbf{H} = 0 \\
-		&\nabla \times \mathbf{H} - \sigma \mathbf{E} = 0 \\
-		&\mathbf{H} \times \mathbf{\hat n} \big |_{\partial \Omega} = \mathbf{H_0} \times \mathbf{\hat n}
-	\end{align}
-	:label: NSEM_system
+    \begin{align}
+        \nabla \times \mathbf{E} + i\omega\mu \mathbf{H} &= 0 \\
+        \nabla \times \mathbf{H} - \sigma \mathbf{E} &= 0 \\
+        \nabla \cdot \mathbf{J} &= 0
+    \end{align}
+    :label: Maxwell_eq
 
-where :math:`\partial \Omega` denotes the boundary, :math:`\mathbf{\hat n}` is the unit vector perpendicular to the boundary and :math:`\mathbf{H_0}` is the magnetic field solution in free-space.
-The source is still the main difficulty in this method as it is unknown. To deal with this, consider the case where the Earth is a uniform half-space with a plane surface. If the source field is assumed
-to be homogeneous, infinite in dimension, and is located at infinity, then the plane waves impinging on the Earth's surface travel in the z-direction and have components :math:`E_x` and :math:`H_y` only. In this case, the electric field is defined by the following Helmholtz equation:
+such that
 
 .. math::
-	\frac{\partial^2 E_x}{\partial z^2} = k^2 E_x \;\;\; \textrm{s.t.} \;\;\; k^2 = i\mu\omega\sigma
-	:label: Helmholtz_E
+    \nabla \times \mathbf{H} \, \Big |_{\partial \Omega}= \mathbf{H_0} \times \mathbf{\hat{n}}
+    :label: boundary_cond
 
-and the relationship between :math:`E_x` and :math:`H_y` is given by:
 
-.. math::
-	H_y = -\frac{i}{\omega\mu} \frac{\partial E_x}{\partial z}
-	:label:
+where :math:`\mathbf{E}`, :math:`\mathbf{H}` and :math:`\mathbf{J}` are the electric fields, magnetic fields and current density respectively. For this formulation, a time dependence of :math:`e^{-i\omega t}` is assumed. Variables :math:`\mu`, :math:`\sigma` and :math:`\omega` are the magnetic permeability, conductivity, and angular frequency respectively. This formulation assumes a quasi-static mode so that the system can be viewed as a diffusion equation (Weaver, 1994; Ward and Hohmann, 1988 in :cite:`Nabighian1991`). By doing so, some difficulties arise when solving the system;
 
-The solution to :eq:`Helmholtz_E` takes the form:
+    - the curl operator has a non-trivial null space making the resulting linear system highly ill-conditioned
+    - the conductivity :math:`\sigma` varies over several orders of magnitude
+    - the fields can vary significantly near the sources but smooth out at distance requiring high resolution near sources
 
-.. math::
-	E_x = Q e^{-kz}
-	:label:
 
-where :math:`Q` is some constant. Taking the ratio of the electric and magnetic fields measured at the surface
-gives:
+The electric field is decomposed into the sum of a vector potential (:math:`\mathbf{A}`) and the gradient of a scalar potential (:math:`\phi`):
 
 .. math::
-	Z = \frac{E_x}{H_y} = \frac{i\omega \mu}{k} = \sqrt{\dfrac{i\omega\mu}{\sigma}}
-	:label: impedance_hs
+    \mathbf{E} = \mathbf{A} + \nabla \phi
+    :label: E_decomp
+
+To obtain a unique solution, we implement the Coulomb gauge condition:
+
+.. math::
+    \nabla \cdot \mathbf{A} = 0
+    :label: coulomb_gauge
+
+Replacing :math:`\mathbf{E}` with Eq. :eq:`E_decomp` in Maxwell's equations and using the Coulomb Gauge we obtain:
+
+.. math::
+    \nabla^2 \mathbf{A} - i \omega \mu \sigma ( \mathbf{A} + \nabla \phi ) = 0
+    :label: helmholtz_a
 
 
-This implies that conductivity :math:`\sigma` of the Earth can be determined by taking measurements of the
-field components, and therefore the impedance constitutes the basic MT response function, or data.
-A 1D layered Earth model can be used to compute the source wave components by iteratively propagating a plane wave from the surface to depth.
+The algorithm used for the MT forward modelling is based on the separation of the total electric and magnetic fields into primary parts that exist in a background conductivity model, and secondary parts that exist because of the difference between the actual conductivity model and the background model. That is,
 
+.. math::
+    \begin{align}
+        \mathbf{E} &= \mathbf{E_p} + \mathbf{E_s} \\
+        \mathbf{H} &= \mathbf{H_p} + \mathbf{H_s}
+    \end{align}
+    :label: primary_secondary_eh
 
-MT Data
-^^^^^^^
+where the primary fields :math:`\mathbf{E_p}` and :math:`\mathbf{H_p}` satisfy :eq:`Maxwell_eq` for the background conductivity :math:`\sigma_b` and the inhomogeneous boundary conditions. Equivalently, the vector and scalar potentials can be thought of as being divided into primary and secondary parts:
 
-For a 3-dimensional Earth the magnetotelluric data are defined as the ratio of the electric and magnetic field components in both the x and y directions for 2 polarizations, also know
+.. math::
+    \begin{align}
+        \mathbf{A} &= \mathbf{A_p} + \mathbf{A_s} \\
+        \phi &= \phi_p + \phi_s
+    \end{align}
+    :label: primary_secondary_a
+
+where :math:`\mathbf{A_p}` and :math:`\phi_p` satisfy :eq:`Maxwell_eq` for the background conductivity model and the inhomogeneous boundary conditions. Substituting Eqs. :eq:`primary_secondary_a` into Eq. :eq:`helmholtz_a` and the third expression in :eq:`Maxwell_eq` gives
+
+.. math::
+    \begin{align}
+    \nabla \times \mu^{-1} \nabla \times \mathbf{A_s} - i\omega \mu \sigma \mathbf{A_s} + \nabla \phi_s &= i\omega \mu \Delta \sigma \mathbf{E_p} \\
+    \nabla \cdot \sigma \mathbf{A_s} + \nabla \cdot \sigma \nabla \phi_s &= - \nabla \cdot \Delta \sigma \mathbf{E_p}
+    \end{align}
+    :label: a_system
+
+where :math:`\Delta \sigma = \sigma - \sigma_b`. The preceding pair of simultaneous equations are the equations that are solved in the NSEM forward-modelling algorithm. The secondary potentials are assumed to vanish on the boundaries of the computational domain, that is, satisfy homogeneous boundary conditions. This pair of inhomogeneous equations, and the homogeneous boundary conditions, match the boundary value problem that is solved for the controlled-source case. The discretization and solution of Eqs. :eq:`a_system` is done in exactly the same way as for the controlled-source case; i.e. finite volume.
+
+MT Problem
+^^^^^^^^^^
+
+Unlike for a controlled source, one more step is required in the forward-modelling procedure for the MT case. In practice, the source field for the MT case is never known and its effects are “cancelled” by considering ratios of the electric and magnetic fields. For a 3-dimensional Earth the magnetotelluric data are defined as the ratio of the electric and magnetic field components in both the x and y directions for 2 polarizations, also know
 as the impedance tensor :math:`\mathbf{Z}`, where:
 
 .. math::
-	\mathbf{ZH} = \mathbf{E}
-	:label:
+    \mathbf{ZH} = \mathbf{E}
+    :label:
 
 such that:
 
 .. math::
-	\begin{bmatrix} Z_{11} & Z_{12} \\ Z_{21} & Z_{22} \end{bmatrix}
-	\begin{bmatrix} H_{x1} & H_{x2} \\ H_{y1} & H_{y2} \end{bmatrix}=
-	\begin{bmatrix} E_{x1} & E_{x2} \\ E_{y1} & E_{y2} \end{bmatrix}
-	:label: impedance_tensor
+    \begin{bmatrix} Z_{xx} & Z_{xy} \\ Z_{yx} & Z_{yy} \end{bmatrix}
+    \begin{bmatrix} H_x^1 & H_x^2 \\ H_y^1 & H_y^1 \end{bmatrix}=
+    \begin{bmatrix} E_x^1 & E_x^2 \\ E_y^1 & E_y^1 \end{bmatrix}
+    :label: impedance_tensor
 
-
-
-
-
-ZTEM Data
-^^^^^^^^^
-
-The Z-Axis Tipper Electromagnetic Technique (ZTEM) (Lo2008) records
-the vertical component of the magnetic field everywhere above the survey area while recording
-the horizontal fields at a ground base reference station. In the same manner as demonstrated for
-MT, transfer functions are computed which relate the vertical fields to the ground based horizontal
-fields. This relation is given by:
+The superscripts in the above equation indicate the E and H fields computed in the same
+conductivity model for two different polarizations of the source field, and the subscripts denote
+the components of the fields. Two invocations of the forward modelling algorithm are therefore
+required, once using a primary field calculated for boundary conditions corresponding to an inducing
+H-field polarized in the x-direction, and again using a primary field calculated with
+boundary conditions for an inducing H-field polarized in the y-direction. The MT case therefore
+requires the solution of two systems of equations:
 
 .. math::
-	H_z(r) = T_{zx}(r,r_0)H_x(r_0) + T_{zy}(r,r_0)H_y(r_0)
-	:label:
+    \begin{align}
+    A(m) u_s^{(1)} &= \hat{q}^{(1)} (m) \\
+    A(m) u_s^{(2)} &= \hat{q}^{(2)} (m)
+    \end{align}
+    :label: mt_system
+
+here the vector :math:`u_s^{(1)}` contains the values of the components of the secondary vector potential and
+the values of the secondary scalar potential on the mesh for the first polarization, :math:`\hat{q}^{(1)}` represents
+the discretization of the right-hand side of Eqs. :eq:`a_system` for the first polarization, and :math:`A(m)` represents
+the discretization of the left-hand side of Eqs. :eq:`a_system`. The second equation in :eq:`mt_system` is the equivalent equation for
+the second polarization. Each of these equations is analogous to the matrix equation that is
+solved for the controlled-source case.
+
+MT data can be represented by the real and imaginary components of the entries of the impedance tensor, or as the apparent resistivity and phase of each entry, i.e.:
+
+.. math::
+    \rho_{ij} = \frac{1}{\omega \mu} \big | Z_{ij} \big |^2
+    :label:
+
+and
+
+.. math::
+    \phi_{ij} = \textrm{tan} \Bigg [ \frac{\textrm{Im} [Z_{ij}]}{\textrm{Re} [Z_{ij}]} \Bigg ]
+    :label:
+
+
+ZTEM Problem
+^^^^^^^^^^^^
+
+The Z-Axis Tipper Electromagnetic Technique (ZTEM) (Lo2008) records the vertical component of the magnetic field everywhere above the survey area while recording the horizontal fields at a ground base reference station. In the same manner as demonstrated for MT, transfer functions are computed which relate the vertical fields to the ground based horizontal fields. This relation is given by:
+
+.. math::
+    H_z(r) = T_{zx}(r,r_0)H_x(r_0) + T_{zy}(r,r_0)H_y(r_0)
+    :label:
 
 where :math:`r` is the location of the vertical field and :math:`r_0` is the location of the ground base station. :math:`T_{zx}` and :math:`T_{zy}` are the vertical field transfer functions, from z to x and z to y respectively. The transfer
 functions are given by:
 
 .. math::
-	\begin{bmatrix} T_x \\ T_y \end{bmatrix} =
-	\Big ( H_x^{(r)}H_y^{(r_0)} - H_x^{(r_0)}H_y^{(r)} \Big )^{-1}
-	\begin{bmatrix} - H_y^{(r)}H_z^{(r_0)} + H_y^{(r_0)}H_z^{(r)} \\ H_x^{(r)}H_z^{(r_0)} - H_x^{(r_0)}H_z^{(r)} \end{bmatrix}
-	:label: transfer_fcn
-
-Maxwell's equations and the source fields then discretized on an Octree mesh in order to solve the forward and inverse problems.
+    \begin{bmatrix} T_x \\ T_y \end{bmatrix} =
+    \Big ( H_x^{(r)}H_y^{(r_0)} - H_x^{(r_0)}H_y^{(r)} \Big )^{-1}
+    \begin{bmatrix} - H_y^{(r)}H_z^{(r_0)} + H_y^{(r_0)}H_z^{(r)} \\ H_x^{(r)}H_z^{(r_0)} - H_x^{(r_0)}H_z^{(r)} \end{bmatrix}
+    :label: transfer_fcn
 
 
+Inversion Problem
+-----------------
 
-Octree Mesh
------------
-
-By using an Octree discretization of the earth domain, the areas near sources and likely model
-location can be give a higher resolution while cells grow large at distance. In this manner, the
-necessary refinement can be obtained without added computational expense. Figure(2) shows an
-example of an Octree mesh, with nine cells, eight of which are the base mesh minimum size.
-
-
-.. figure:: images/OcTree.png
-     :align: center
-     :width: 700
-
-
-When working with Octree meshes, the underlying mesh is defined as a regular 3D orthogonal grid where
-the number of cells in each dimension are :math:`2^{m_1} \times 2^{m_2} \times 2^{m_3}`, with grid size :math:`h`. This underlying mesh
-is the finest possible, so that larger cells have lengths which increase by powers of 2 multiplied by
-:math:`h`. The idea is that if the recovered model properties change slowly over a certain volume, the cells
-bounded by this volume can be merged into one without losing the accuracy in modeling, and are
-only refined when the model begins to change rapidly.
-
-
-
-Discretization of Operators
----------------------------
-
-The operators div, grad, and curl are discretized using a finite volume formulation. Although div and grad do not appear in :eq:`impedance_tensor`, they are required for the solution of the system. The divergence
-operator is discretized in the usual flux-balance approach, which by Gauss' theorem considers the current flux through each face of a cell. The nodal gradient (operates on a function with values on the nodes) is obtained by differencing adjacent nodes and dividing by edge length. The discretization of the curl operator is computed similarly to the divergence operator by utilizing Stokes theorem by summing the magnetic field components around the edge of each face. Please
-see :cite:`Haber2012` for a detailed description of the discretization process.
-
-
-
-Forward Problem
----------------
-
-The solutions for the :math:`\mathbf{H}` and :math:`\mathbf{E}` fields are computed iteratively using the stabilized conjugate gradient method (BiCGstab). Because of the null space of the curl operator a discrete Helmholtz decomposition is used to write the electric field as
+Exactly as for the controlled-source case, the MT inverse problem is solved by finding the
+conductivity model that minimizes the sum of a data misfit term and a measure of the amount of
+structure in the model, where this model is determined using an iterative, Gauss-Newton
+procedure. The only difference between the MT and controlled-source cases is the explicit
+composition of the Jacobian matrix of sensitivities. As mentioned above, the data in the MT
+inverse problem are impedances, or functions of the impedances, and can be represented by:
 
 .. math::
-	\mathbf{E} = \mathbf{A} + \nabla \phi
-	:label:
+    d_i = \mathbb{F}_i \big [ Q \big ( u_p^{(1)} + u_s^{(1)} \big ), \; Q \big ( u_p^{(2)} + u_s^{(2)} \big ) \big ]
+    :label: datum
 
-where :math:`\mathbf{A}` is a vector potential and :math:`\phi` is a scalar potential. For MT or ZTEM data, :eq:`NSEM_system` is solved by eliminating the curl operator and solving for :math:`\mathbf{A}` and :math:`\phi`.
-
-The forward problem of simulating data can now be written in the following form. Let :math:`\mathbf{D(m)}` be the discrete linear system obtained by the discretization of Maxwell's equations, where :math:`\mathbf{m} = log(:mathbf{\sigma})`.
-The electric fields :math:`U` on the edges everywhere in the mesh are then:
-
-.. math::
-	U(\sigma) = \mathbf{D(m)^{-1} S}
-	:label:
-
-where :math:`\mathbf{S} = (s_1,s_2)` is the source for 2 polarizations and is approximated from a 1D MT solution and
-interpolated to the entire mesh. The fields at the receivers locations are then
+where :math:`d_i` is the i-th datum, :math:`Q` is the matrix that produces the components of the E and H fields
+at the observation locations given the values of the vector and scalar potentials on the
+mesh, and the function :math:`\mathbb{F}_i` represents the operation of calculating the i-th datum.
+The sensitivity of the i-th datum with respect to the j-th model parameter is therefore
 
 .. math::
-	\begin{align}
-	\mathbf{H} = Q_h u \\
-	\mathbf{E} = Q_e u
-	\end{align}
+    J_{ij} = \frac{\partial d_i}{\partial m_j} = 
+    \frac{\partial \mathbb{F}_i}{\partial F_k^{(1)}} \frac{\partial F_k^{(1)}}{\partial m_j} + \frac{\partial \mathbb{F}_i}{\partial F_k^{(2)}} \frac{\partial F_k^{(2)}}{\partial m_j}
+    S_{ij}^{(1)} \frac{\partial F_k^{(1)}}{\partial m_j} + S_{ij}^{(2)} \frac{\partial F_k^{(2)}}{\partial m_j}
+    :label: sensitivity
+
+where :math:`F_k^{(1)}` represents an E or H-field component (for the first polarization) at the observation
+location and
+
+.. math::
+    \frac{\partial F_k^{(1)}}{\partial m_j} = \frac{\partial}{\partial m_j} \big [ Q_k \big ( u_p^{(1)} + u_s^{(1)} \big ) \big ] = Q_k \frac{\partial u_s^{(1)}}{\partial m_j}
+    :label:
+
+since the primary fields are not dependent on the model parameters in the inversion.
+
+The expressions for the derivatives of the secondary vector and scalar potentials for both
+polarizations with respect to the j-th model parameter are obtained by differentiation both
+sides of Eqs. :eq:`mt_system`:
+
+.. math::
+    A(m) \frac{\partial u_s^{(1)}}{\partial m_j} + \frac{\partial}{\partial m_j} \bigg [ A(m) u_s^{(1)} \bigg ] = \frac{\partial \hat{q}^{(1)}}{\partial m_j}
+    :label:
 
 where
 
 .. math::
-	Q_h = \dfrac{1}{i\omega\mu_0} Q_c A_{f2c} CURL
-	:label:
+    \frac{\partial u_s^{(1)}}{\partial m_j} = A^{-1}(m) \Bigg [ \frac{\partial \hat{q}^{(1)}}{\partial m_j} - \frac{\partial}{\partial m_j} \bigg [ A(m) u_s^{(1)} \bigg ] \Bigg ]
+    :label:
 
-and
-
-.. math::
-	Q_e = Q_c A_{e2c}
-	:label:
-
-The matrix :math:`Q_c` is an interpolation matrix from cell centers to receiver locations, :math:`A_{f2c}` averages from faces to cell centers, and :math:`A_{e2c}` averages from edges to cell centers.
-
-.. _theory_inv:
-
-Inverse Problem
----------------
-
-Solving the non-linear EM inverse problem for electric conductivity is akin to minimizing the
-following objective function:
-
+The structure of the right-hand sides of :eq:`mt_system` is very similar to the model dependent parts of the left-hand sides of the previous equations. Hence,
 
 .. math::
-	\Phi_{mis} (\mathbf{m}) = \frac{1}{2} \bigg \| \Sigma \odot \big ( \mathbf{D}(\sigma) - \mathbf{d^{obs}} \big ) \big \|^2_2
-	:label:
+    \frac{\partial \hat{q}^{(1)}}{\partial m_j} = \frac{\partial}{\partial m_j} \bigg [ A(m) u_p^{(1)} \bigg ]
+    :label:
 
-
-where :math:`\Sigma` is a matrix of the inverse standard deviation for each measured data point :math:`\mathbf{d^{obs}}`. Due to the ill-posedness of the problem, there are no stable solutions and a regularization is needed. The regularization used penalizes for both smoothness, and likeness to a reference model :math:`\mathbf{m_{ref}}` supplied by the user.
-
-.. math::
-	\Phi_{reg} (\mathbf{m-m_{ref}}) = \frac{1}{2} \big \| \nabla (\mathbf{m - m_{ref}}) \big \|^2_2
-	:label:
-
-An important consideration comes when discretizing the regularization. The gradient operates on
-cell centered variables in this instance. Applying a short distance approximation is second order
-accurate on a domain with uniform cells, but only :math:`\mathcal{O}(1)` on areas where cells are non-uniform. To
-rectify this a higher order approximation is used (:cite:`Haber2012`). The discrete regularization
-operator can then be expressed as
+and similarly for the second polarization. Introducing the same notation as for the controlledsource
+case, the derivative of the discretization of the vector and scalar potentials can be
+expressed as:
 
 .. math::
-	\begin{align}
-	\Phi_{reg}(\mathbf{m}) &= \frac{1}{2} \int_\Omega \big | \nabla m \big |^2 dV \\
-	& \approx \frac{1}{2}  \beta \mathbf{ m^T G_c^T} \textrm{diag} (\mathbf{A_f^T v}) \mathbf{G_c m}
-	\end{align}
-	:label:
+    \frac{\partial u_s^{(1)}}{\partial m_j} = A^{-1}(m) \bigg [ G \big ( m ,u_p^{(1)} \big ) - G \big ( m ,u_s^{(1)} \big ) \bigg ]
+    :label:
 
-where :math:`\mathbf{A_f}` is an averaging matrix from faces to cell centres, :math:`\mathbf{G}` is the cell centre to cell face gradient operator, and v is the cell volume For the benefit of the user, let :math:`\mathbf{WTW}` be the weighting matrix given by
+
+and the product of Jacobian matrix of sensitivities with a vector, as
 
 .. math::
-	\mathbf{WTW} = \beta \mathbf{ G_c^T} \textrm{diag}(\mathbf{A_f^T v}) \mathbf{G_c m} =
-	\begin{bmatrix} \mathbf{\alpha_x} & & \\ & \mathbf{\alpha_y} & \\ & & \mathbf{\alpha_z} \end{bmatrix} \big ( \mathbf{G_x^T \; G_y^T \; G_z^T} \big ) \textrm{diag} (\mathbf{v_f}) \begin{bmatrix} \mathbf{G_x} \\ \mathbf{G_y} \\ \mathbf{G_z} \end{bmatrix}
-	:label:
+    Jv = \bigg [ J^{(1)} + J^{(2)} \bigg ] v = S^{(1)} Q A^{-1} \bigg [ \bigg ( G_p^{(1)} - G_s^{(1)} \bigg ) + S^{(2)} Q A^{-1} \bigg (  G_p^{(2)} - G_s^{(2)} \bigg ) \bigg ] v
+    :label: Jv
 
-where :math:`\alpha_i` for :math:`i=x,y,z` are diagonal matricies. In the code the WTW matrix is stored as a separate matrix so that individual model norm components can be calculated. Now, if a cell weighting is used it is applied to the entire norm, that is, there is a w for each cell.
+where the superscripts and subscripts indicate to which polarization each term refers, and
+whether it involves the primary or secondary potentials.
 
-.. math::
-	\mathbf{WTW} = \textrm{diag} (w) \mathbf{WTW} \textrm{diag} (w)
-	:label:
-
-There is also the option of choosing a cell interface weighting. This allows for a weight on each cell FACE. The user must supply the weights (:math:`w_x, w_y, w_z` ) for each weighted cell. When the interface
-weighting option is chosen and the value is less than 1, a sharp discontinuity will be created. When
-the value is greater than 1, there will be a smooth transition. To prevent the inversion from putting
-"junk" on the surface, the top X and Y face weights should have a large value.
-
-.. math::
-	\mathbf{WTW} = \mathbf{\alpha_x G_x^T} \textrm{diag} (w_x v_f) \mathbf{G_x} + \mathbf{\alpha_y G_y^T} \textrm{diag} (w_y v_f) \mathbf{G_y} + \mathbf{\alpha_z G_z^T} \textrm{diag} (w_z v_f) \mathbf{G_z}
-	:label:
-
-The resulting optimization problem is therefore:
-
-.. math::
-	\begin{align}
-	&\min_m \;\; \Phi_{mis} (\mathbf{m}) + \beta \Phi_{reg}(\mathbf{m - m_{ref}}) \\
-	&\; \textrm{s.t.} \;\; \mathbf{m_L \leq m \leq m_H}
-	\end{align}
-	:label:
-
-where :math:`\beta` is a regularization parameter, and :math:`\mathbf{m_L}` and :math:`\mathbf{m_H}` are upper and lower bounds provided by some a prior geological information.
-A simple Gauss-Newton optimization method is used where the system of equations is solved using ipcg (incomplete preconditioned conjugate gradients) to solve for each G-N step. For more
-information refer again to :cite:`Haber2012` and references therein.
+Equation :eq:`Jv` also indicates the sequence of operations that are required to compute the
+product of the Jacobian matrix with a vector, which is one of the two computationally intensive
+operations required by the iterative solution to the Gauss-Newton normal system
+of equations. It can be seen that for the MT case, the solution of two prototypical forward modelling
+problems, :math:`Ax=b` , are required for one product of the Jacobian matrix with a
+vector. Likewise, the solution of two prototypical transpose systems, :math:`A^T v =w`, are required
+to compute the product of the transpose of the Jacobian matrix with a vector, which is the
+other computationally-intensive operation that is required.
 
 
 
