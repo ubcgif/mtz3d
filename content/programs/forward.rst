@@ -74,7 +74,7 @@ The lines of input file (**mtztem_octree_fwd.inp**) are formatted as follows:
 
 .. _mtztem_fwd_ln4:
 
-    - **Background Susceptibility Model:** The user may provide the file path to a background susceptibility model on this line. If a constant susceptibility is being used, "VALUE" may be entered and followed by the background susceptibility. For no background susceptibility, the flag "NO_SUS" is used.
+    - **Background Susceptibility Model:** The user may provide the file path to a background susceptibility model on this line. If a constant background susceptibility is being used, enter the value this line. For no background susceptibility, the flag *null* is used.
 
 .. _mtztem_fwd_ln5:
 

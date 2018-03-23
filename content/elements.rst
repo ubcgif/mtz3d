@@ -1,7 +1,7 @@
 .. _elements:
 
-Elements of the Program MTZ3D
-=============================
+Elements of the Program MTZTEM
+==============================
 
 Introduction
 ------------
@@ -21,7 +21,7 @@ Here, we describe the formats of supplementary files used to run MTZTEM executab
 .. toctree::
     :maxdepth: 1
 
-    Survey/Locations File <files/surveyFile>
+    Survey/Locations File <files/locationsFile>
     Predicted Data File <files/preFile>
     Observations File <files/obsFile>
     Topography File <files/topoFile>
