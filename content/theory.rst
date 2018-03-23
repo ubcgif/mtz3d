@@ -77,12 +77,14 @@ where :math:`\mathbf{A_p}` and :math:`\phi_p` satisfy :eq:`Maxwell_eq` for the b
 
 .. math::
     \begin{align}
-    \nabla \times \mu^{-1} \nabla \times \mathbf{A_s} - i\omega \mu \sigma \mathbf{A_s} + \nabla \phi_s &= i\omega \mu \Delta \sigma \mathbf{E_p} \\
+    \nabla^2  \mathbf{A_s} + i\omega \mu \sigma \big ( \mathbf{A_s} + \nabla \phi_s \big ) &= - i\omega \mu \Delta \sigma \mathbf{E_p} \\
     \nabla \cdot \sigma \mathbf{A_s} + \nabla \cdot \sigma \nabla \phi_s &= - \nabla \cdot \Delta \sigma \mathbf{E_p}
     \end{align}
     :label: a_system
 
 where :math:`\Delta \sigma = \sigma - \sigma_b`. The preceding pair of simultaneous equations are the equations that are solved in the NSEM forward-modelling algorithm. The secondary potentials are assumed to vanish on the boundaries of the computational domain, that is, satisfy homogeneous boundary conditions. This pair of inhomogeneous equations, and the homogeneous boundary conditions, match the boundary value problem that is solved for the controlled-source case. The discretization and solution of Eqs. :eq:`a_system` is done in exactly the same way as for the controlled-source case; i.e. finite volume.
+
+.. _theory_mt:
 
 MT Problem
 ^^^^^^^^^^
@@ -136,6 +138,7 @@ and
     \phi_{ij} = \textrm{tan} \Bigg [ \frac{\textrm{Im} [Z_{ij}]}{\textrm{Re} [Z_{ij}]} \Bigg ]
     :label:
 
+.. _theory_ztem:
 
 ZTEM Problem
 ^^^^^^^^^^^^
@@ -155,6 +158,7 @@ functions are given by:
     \begin{bmatrix} - H_y^{(r)}H_z^{(r_0)} + H_y^{(r_0)}H_z^{(r)} \\ H_x^{(r)}H_z^{(r_0)} - H_x^{(r_0)}H_z^{(r)} \end{bmatrix}
     :label: transfer_fcn
 
+.. _theory_inv:
 
 Inversion Problem
 -----------------

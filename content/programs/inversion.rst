@@ -13,7 +13,7 @@ Running the Program
 
 To run the inversion, open a command line window and type the following:
 
-.. figure:: images/run_e3dmt_inv_iter.png
+.. figure:: images/mtztem_run_inv.png
      :align: center
      :width: 700
 

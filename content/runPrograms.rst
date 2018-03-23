@@ -3,13 +3,10 @@
 Running the programs
 ====================
 
-The software package E3DMT contains the following Fortran executable codes:
+The software package MTZTEM contains the following Fortran executable codes:
 
-- ``MTcreate_octree_mesh_e3d``: Creates OcTree mesh
-- ``blk3cell``: Creates block model on tensor mesh
-- ``3DModel2Octree``: Interpolates tensor model to Octree mesh
-- ``e3dmtfwd``: Forward models synthetic MT and ZTEM data
-- ``e3dmtinv``: Inverts MT and ZTEM data
+- ``MT3Dfwd``: Forward models synthetic MT data at a single frequency
+- ``ZTEM_MT3Dinv``: Inverts MT and/or ZTEM data
 
 
 .. note::
@@ -23,14 +20,11 @@ The software package E3DMT contains the following Fortran executable codes:
 	Executable files should **not** be renamed. However, input file names can be specified by the user if desired.
 
 
-To become proficient at using the E3DMT package, we suggest becoming familiar with programming in the following sections:
+To become proficient at using the MTZTEM package, we suggest becoming familiar with programming in the following sections:
 
   .. toctree::
     :maxdepth: 1
 
-    OcTree Mesh Generation <programs/createOcTree>
-    Creating Octree Models <programs/createModel>
     Forward Modeling <programs/forward>
-    Additional Cell and Face Weights <programs/weightsFiles>
     Inversion <programs/inversion>
 

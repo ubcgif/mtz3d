@@ -22,8 +22,9 @@ Here, we describe the formats of supplementary files used to run MTZTEM executab
     :maxdepth: 1
 
     Survey/Locations File <files/locationsFile>
-    Predicted Data File <files/preFile>
     Observations File <files/obsFile>
+    Predicted Data (MT3Dfwd) <files/preFileFWD>
+    Predicted Data (ZTEM_MT3Dinv) <files/preFileINV>
     Topography File <files/topoFile>
     Tensor Mesh File <files/tensor_mesh>
     Model File <files/model>

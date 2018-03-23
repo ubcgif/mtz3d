@@ -1,7 +1,7 @@
-.. _preFile:
+.. _preFileINV:
 
-Predicted Data File
-===================
+Predicted Data (ZTEM_MTinv)
+===========================
 
 The predicted data file is output from **e3dmtfwd.exe** and contains the locations and predicted field data. The order of the data point is in the same order as the :ref:`survey/locations files <surveyFile>`. Each block, separated by a blank line, are the data for a particular transmitter and frequency. Thus predicted data files take the format:
 
