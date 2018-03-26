@@ -28,6 +28,7 @@ Here, we describe the formats of supplementary files used to run MTZTEM executab
     Topography File <files/topoFile>
     Tensor Mesh File <files/tensor_mesh>
     Model File <files/model>
+    Bounds File <files/bounds>
     Model and Face Weights Files <files/weights>
 
 

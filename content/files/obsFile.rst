@@ -9,8 +9,8 @@ The observation file contains all necessary survey information for running the i
     - Bolded entries are fixed flags recognized by the Fortran codes and blue hyperlinked entries are values/regular expressions specified by the user
 
 
-MT and ZTEM data
-----------------
+MT or ZTEM data
+---------------
 
 If only MT, ZTEM or apparent resistivity and phase data are being inverted, the observation file is formatted as follows:
 
@@ -41,8 +41,8 @@ If only MT, ZTEM or apparent resistivity and phase data are being inverted, the 
      Example data file for MTZ data.
 
 
-Joint MT and ZTEM
------------------
+Joint MT and ZTEM data
+----------------------
 
 If joint MT and ZTEM data are being inverted, the observation file is formatted as follows:
 
@@ -51,28 +51,33 @@ If joint MT and ZTEM data are being inverted, the observation file is formatted 
 |
 | :ref:`Cmt<e3dmt_obs_ln3>`
 | :ref:`Dmt<e3dmt_obs_ln4>`
-| :ref:`Data Array<e3dmt_obs_ln5>`
+| :ref:`MT Data Array<e3dmt_obs_ln5>`
+|
 | :ref:`Cztem<e3dmt_obs_ln3>`
 | :ref:`Dztem<e3dmt_obs_ln4>`
-| :ref:`Data Array<e3dmt_obs_ln5>`
+| :ref:`ZTEM Data Array<e3dmt_obs_ln5>`
 |
 | :ref:`Cmt<e3dmt_obs_ln3>`
 | :ref:`Dmt<e3dmt_obs_ln4>`
-| :ref:`Data Array<e3dmt_obs_ln5>`
+| :ref:`MT Data Array<e3dmt_obs_ln5>`
+|
 | :ref:`Cztem<e3dmt_obs_ln3>`
 | :ref:`Dztem<e3dmt_obs_ln4>`
-| :ref:`Data Array<e3dmt_obs_ln5>`
+| :ref:`ZTEM Data Array<e3dmt_obs_ln5>`
 |
 | :math:`\;\;\;\;\;\;\;\; \vdots`
 |
 | :ref:`Cmt<e3dmt_obs_ln3>`
 | :ref:`Dmt<e3dmt_obs_ln4>`
-| :ref:`Data Array<e3dmt_obs_ln5>`
+| :ref:`MT Data Array<e3dmt_obs_ln5>`
+|
 | :ref:`Cztem<e3dmt_obs_ln3>`
 | :ref:`Dztem<e3dmt_obs_ln4>`
-| :ref:`Data Array<e3dmt_obs_ln5>`
+| :ref:`ZTEM Data Array<e3dmt_obs_ln5>`
 |
 |
+
+.. note:: Frequencies for MT and subsequent ZTEM data do not need to match. However, the number of MT data blocks and ZTEM data blocks must be equal.
 
 
 Parameter Descriptions
@@ -94,11 +99,11 @@ Parameter Descriptions
         
 .. _e3dmt_obs_ln3:
 
-    - **(D) Frequency:** Frequency at which the corresponding set of field observations are made. Example: *FREQUENCY 1.0000E+002*.
+    - **(C) Frequency:** Frequency at which the corresponding set of field observations are made. Example: *1.0000E+002*.
 
 .. _e3dmt_obs_ln4:
 
-    - **(E) Number of receivers:** Number of receivers collecting data at the aforementioned frequency for the aforementioned data type. Example: *N_RECV 900*.
+    - **(D) Number of receivers:** Number of receivers collecting data at the aforementioned frequency for the aforementioned data type. Example: *900*.
 
 .. _e3dmt_obs_ln5:
 
@@ -116,7 +121,7 @@ MT impedance data (DATATYPE = MTZ):
 Each row in the array contains the elements of the impedance tensor at a particular location separated into real and imaginary components, along with the corresponding uncertainties. The units for MT data are (V/A). The columns for this data format are as follows:
 
 .. math::
-    | \; x \; | \; y \; | \; z \; | \;\;\; Z_{11} \; data \;\;\; | \;\;\; Z_{12} \; data \;\;\; | \;\;\; Z_{21} \; data \;\;\; | \;\;\; Z_{22} \; data \;\;\; |
+    | \; x \; | \; y \; | \; z \; | \;\;\; Z_{xx} \; data \;\;\; | \;\;\; Z_{xy} \; data \;\;\; | \;\;\; Z_{yx} \; data \;\;\; | \;\;\; Z_{yy} \; data \;\;\; |
 
 such that each :math:`Z_{ij} \; data` is comprised of 4 columns:
 
@@ -137,7 +142,7 @@ MT apparent resistivity and phase data (DATATYPE = MTR):
 Each row in the array contains the elements of the impedance tensor at a particular location separated into apparent resistivity and phase, along with the corresponding uncertainties. The units for apparent resistivity are Ohms and those for apparent resistivity are degrees. The columns for this data format are as follows:
 
 .. math::
-    | \; x \; | \; y \; | \; z \; | \;\;\; Z_{11} \; data \;\;\; | \;\;\; Z_{12} \; data \;\;\; | \;\;\; Z_{21} \; data \;\;\; | \;\;\; Z_{22} \; data \;\;\; |
+    | \; x \; | \; y \; | \; z \; | \;\;\; Z_{xx} \; data \;\;\; | \;\;\; Z_{xy} \; data \;\;\; | \;\;\; Z_{yx} \; data \;\;\; | \;\;\; Z_{yy} \; data \;\;\; |
 
 such that each :math:`Z_{ij} \; data` is comprised of 4 columns:
 
@@ -193,7 +198,7 @@ In this case there are two data arrays, one for the MT data and one for the ZTEM
 Each row in the array contains the elements of the impedance tensor at a particular location separated into real and imaginary components, along with the corresponding uncertainties. The units for MT data are (V/A). The columns for this data format are as follows:
 
 .. math::
-    | \; x \; | \; y \; | \; z \; | \;\;\; Z_{11} \; data \;\;\; | \;\;\; Z_{12} \; data \;\;\; | \;\;\; Z_{21} \; data \;\;\; | \;\;\; Z_{22} \; data \;\;\; | \; 8 \; flagged \; columns \; |
+    | \; x \; | \; y \; | \; z \; | \;\;\; Z_{xx} \; data \;\;\; | \;\;\; Z_{xy} \; data \;\;\; | \;\;\; Z_{yx} \; data \;\;\; | \;\;\; Z_{yy} \; data \;\;\; | \; 8 \; flagged \; columns \; |
 
 such that each :math:`Z_{ij} \; data` is comprised of 4 columns:
 

@@ -20,6 +20,12 @@ where
 
 and the relation between the tensor, the electric fields and the magnetic fields is found in the :ref:`theory section<theory_mt>`
 
+.. figure:: images/dpre_fwd_impedance.png
+     :align: center
+     :width: 700
+
+     Example file containing predicted impedance tensor data.
+
 Apparent Resistivity and Phase Data
 -----------------------------------
 
@@ -33,6 +39,13 @@ where
     - :math:`\rho_{ij}` is the apparent resistivity corresponding to entry i,j of the impedance tensor
     - :math:`\phi_{ij}` is the phase corresponding to entry i,j of the impedance tensor
 
+
+
+.. figure:: images/dpre_fwd_resistivity.png
+     :align: center
+     :width: 700
+
+     Example file containing predicted apparent resistivity and phase data.
 
 Fields Data
 -----------
@@ -50,8 +63,11 @@ where
     - :math:`H_i^{\prime\prime}` is the imaginary component of the magnetic field along the :math:`i^{th}` cartesian component
 
 
+.. figure:: images/dpre_fwd_fields.png
+     :align: center
+     :width: 700
 
-
+     Example file containing the predicted electric and magnetic fields at observation locations.
 
 
 

@@ -1,31 +1,32 @@
 .. _weightsFile:
 
-Cell and Face Weights File
-==========================
+Model (Sensitivity) Weights File
+================================
+
+The weighting matrix is generally used to implement a sensitivity weighting which may be needed when there are few source locations or few frequencies; that is, when the data do not adequately constrain the distribution of conductivity with depth. In these circumstances, the model recovered without any weighting may place structures at the surface. The weighting matrix can be used to find solutions with alternative distributions of conductivity with depth. The methodology is similar to that employed when inverting surface gravity or magnetic data, so the weights in the matrix can be inversely proportional to some power of the depth of the associated cell.
+
+The structure and ordering of the weights file is identical to that of a model file, i.e.:
 
 
-Cell Weights
-------------
+|
+| :math:`w_{1,1,1}`
+| :math:`w_{1,1,2}`
+| :math:`\;\vdots`
+| :math:`w_{1,1,nz}`
+| :math:`w_{1,2,1}`
+| :math:`\;\vdots`
+| :math:`w_{1,nx,nz}`
+| :math:`w_{2,1,1}`
+| :math:`\;\vdots`
+| :math:`w_{i,j,k}`
+| :math:`\;\vdots`
+| :math:`w_{ny,nx,nz}`
+|
+|
 
-Cell weights files have the same format as :ref:`model files <modelFile>`. When creating cells weights:
+where :math:`N=nx \times ny \times nz` is the total number of cells in the corresponding tensor mesh. Cells in the x and y directions are organized E to W and S to N, respectively, while cells are organized top to bottom in the vertical. Thus :math:`w_{1,1,1}` is the weight for the top southwesternmost cell and :math:`w_{ny,nx,nz}` is the weight for the bottom northeastermost cell. For sensitivity weighting, only relative values matter. Regions where cells have smaller weights will have more structure. For example, assigning weights of surface cells to a value of unity, and deeper cells to values between 0 and 1 will force structure to occur at greater depths. 
 
-	- All cells must be assigned a weight values larger than 0! This is to ensure the problem is sufficiently well-conditioned.
-	- Model weight values should be set relative to a value of 1. This is to ensure the relative emphasis on model weights and surface weights is preserved. A value of 1 implies that no cell weighting is being applied.
-	- Large model weights (:math:`w \gg 1` ) are used for cells that we want to match the reference model.
-	- Small model weights (:math:`w \ll 1` ) are used for cells to reduce the impact of the reference model on the cells.
-
-
-Interface Weights
------------------
-
-Interface weights files contain the interface weights in x, y and z in a single column vectors; as the number of faces in x, y and z may differ. When creating interface weights:
-
-	- All interface weights must be larger than 0! This is to ensure the problem is sufficiently well-conditioned.
-	- Interface weight value should be set relative to a value of 1. This is to ensure the relative emphasis on model weights and surface weights is preserved. A value of 1 implies that no interface weighting is being applied.
-	- Large interface weights (:math:`w \gg 1` ) preserve gradients within reference model.
-	- Small interface weights (:math:`w \ll 1` ) results in smoother gradients within
-
-
+.. note:: Weights for inactive cells, including the air, do not play a role in the solution and so they can be assigned any number.
 
 
 

@@ -12,7 +12,7 @@ A basic way of running inversion is done by opening a command line window and ty
 
 .. figure:: images/mtztem_run_inv.png
      :align: center
-     :width: 700
+     :width: 600
 
 For multiple frequencies, the *mpiexec* call can be used for parallelization. In this case, we type in order: *mpiexec*, the flag *-n*, the number of frequencies (*"nFreq"*), the path to the inversion executable and the corresponding input file.
 
@@ -69,7 +69,7 @@ The lines of input file (**mt3dinv.inp**) are formatted as follows:
 |
 |
 
-.. note:: If *DEFAULT* is used on line 15 (Chi Factor), then the default values will be used on lines 16-20 (denoted by an asterisk)!!!
+.. note:: If *DEFAULT* is used on line 15 (Chi Factor), then the default values will be used on lines 16-20 (denoted by an asterisk). If a value is entered on line 15, the flag *DEFAULT* can be used on any subsequent line.
 
 
 .. figure:: images/mtztem_inv_input.png
@@ -98,18 +98,25 @@ The lines of input file (**mt3dinv.inp**) are formatted as follows:
 
 .. _mtztem_inv_ln4:
 
-    - **Initial Model:** The user may supply the file path to an initial conductivity model. If a homogeneous conductivity value is being used for all active cells, the user can enter the value in S/m.
+    - **Initial Model:** 
+
+        - The user may supply the file path to an initial :ref:`conductivity model<modelFile>`.
+        - If a homogeneous conductivity value is being used for all active cells, the user can enter the value in S/m.
 
 .. _mtztem_inv_ln5:
 
-    - **Reference Model:** The user may supply the file path to a reference conductivity model. If a homogeneous conductivity value is being used for all active cells, the user can enter the value in S/m.
+    - **Reference Model:**
+
+        - The user may supply the file path to a reference :ref:`conductivity model<modelFile>`.
+        - If a homogeneous conductivity value is being used for all active cells, the user can enter the value in S/m.
 
 .. _mtztem_inv_ln6:
 
     - **Background Susceptibility Model:**
 
-        - The user may supply the file path to a background susceptibility model.
-        - If a homogeneous susceptibility value is being used for all active cells, the user can enter the value in SI. If the Earth is non-magnetic, the user may use the flag "NO_SUS".
+        - The user may supply the file path to a background :ref:`susceptibility model<modelFile>`.
+        - If a homogeneous susceptibility value is being used for all active cells, the user can enter the value in SI.
+        - If the Earth is non-magnetic, the user may use the flag "NO_SUS".
 
 .. _mtztem_inv_ln7:
 

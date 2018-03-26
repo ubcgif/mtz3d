@@ -8,7 +8,7 @@ MTZTEM package overview
 Description
 -----------
 
-The MTZTEM package is primarily designed to recover conductivity models on 3D tensor meshes through the inversion of magnetotelluric (MT) and/or Z-axis tipper EM (ZTEM) data. If necessary, this package can also be used to forward model both MT and ZTEM data. The data to be inverted can be either the elements of the impedance tensor, magnetivariational transfer functions (Tippers) or the associated apparent resistivities and phases. The inversion program can be run from the command line under LINUX, or MS-Windows or, in the MS Windows environment, using a graphical user interface (GUI). The UBC-GIF utility MeshTools3D is used to examine resulting 3D conductivity models.
+The MTZTEM package is primarily designed to recover conductivity models on 3D tensor meshes through the inversion of magnetotelluric (MT) and/or Z-axis tipper EM (ZTEM) data. If necessary, this package can also be used to forward model both MT and ZTEM data. The data to be inverted can be either the elements of the impedance tensor, the associated apparent resistivities and phases, or elements of magnetivariational transfer functions (Tippers). The inversion program can be run from the command line under LINUX, or MS-Windows or, in the MS Windows environment, using a graphical user interface (GUI). The UBC-GIF utility MeshTools3D is used to examine resulting 3D conductivity models.
 
 As of 2010, the code has been updated to work with transfer function data, along with impedance MT data and furthermore, the code has been parallelized with open MP and MPI. MPI parallelization was used for variety of frequency data and will be discussed below in greater detail, while open MP parallelization is used for two orthogonal source polarization directions for each frequency. Hence, for the frequency-based parallelization, the number of processors defined under MPI settings can not exceed the number of frequencies described in the data file. Each of these frequency-oriented processes will be further split up in two source polarization threads using the open MP environment.
 
@@ -26,7 +26,7 @@ The program library provides the following codes:
 
    - **ZTEM_MTinv.exe:** A parallelizable inversion code for inverting MT and/or ZTEM data at a multitude of frequencies
 
-   - **MTfwd.exe:** A forward modeling code from predicting MT data (no ZTEM) at a single frequency
+   - **MTfwd.exe:** A forward modeling code for predicting MT data (no ZTEM) at a single frequency
 
 
 .. note:: To forward model MT and/or ZTEM data at a multitude of frequencies, simply run the inversion code and terminate after data are predicted for the starting model

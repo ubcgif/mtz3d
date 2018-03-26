@@ -9,10 +9,9 @@ Background Theory
 Forward Problem
 ---------------
 
-Maxwell's equations provide the starting point from which an understanding of how electromagnetic fields can be used to uncover the substructure of the Earth. The sources in the magnetotelluric (MT) and Z-axis tipper elecromagnetic (ZTEM) methods are modeled as plain waves originating from natural phenomenon. These waves can be of very low frequency (< 1 Hz) and very high energy, making it possible to image very deep targets. This also implies that the source term is
-zero inside the domain of interest, and therefore the source term on the boundaries becomes very important. And in contrast to the controlled-source case, the forward-modelling problem for the NSEM case involves homogeneous equations with inhomogeneous boundary conditions.
+Maxwell's equations provide the starting point for solving the natural source electromagnetic (NSEM) problem. The sources in the magnetotelluric (MT) and Z-axis tipper elecromagnetic (ZTEM) methods are modeled as plain waves originating from natural phenomenon. These waves can be of very low frequency (< 1 Hz) and very high energy, making it possible to image very deep targets. For the NSEM problem, the source term is zero inside the domain of interest; implying the source term on the boundaries becomes very important. Ultimately the forward-modelling problem for the NSEM case involves homogeneous equations with inhomogeneous boundary conditions, unlike the controlled-source case.
 
-For natural source electromagnetic (NSEM) problems, we solve the following system in the frequency domain:
+For NSEM problems, we solve the following system in the frequency domain:
 
 .. math::
     \begin{align}
@@ -89,7 +88,7 @@ where :math:`\Delta \sigma = \sigma - \sigma_b`. The preceding pair of simultane
 MT Problem
 ^^^^^^^^^^
 
-Unlike for a controlled source, one more step is required in the forward-modelling procedure for the MT case. In practice, the source field for the MT case is never known and its effects are “cancelled” by considering ratios of the electric and magnetic fields. For a 3-dimensional Earth the magnetotelluric data are defined as the ratio of the electric and magnetic field components in both the x and y directions for 2 polarizations, also know
+Unlike for a controlled source, one more step is required in the forward-modelling procedure for the MT case. In practice, the source field for the MT case is never known and its effects are “cancelled” by considering ratios of the electric and magnetic fields. For a 3-dimensional Earth the magnetotelluric data are defined as the ratio of the electric and magnetic field components in both the x and y directions for 2 orthogonal polarizations, also know
 as the impedance tensor :math:`\mathbf{Z}`, where:
 
 .. math::
