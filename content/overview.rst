@@ -28,6 +28,8 @@ The program library provides the following codes:
 
    - **MTfwd.exe:** A forward modeling code for predicting MT data (no ZTEM) at a single frequency
 
+   - **blk3cell.exe:** A utility for generating block models on tensor meshes
+
 
 .. note:: To forward model MT and/or ZTEM data at a multitude of frequencies, simply run the inversion code and terminate after data are predicted for the starting model
 
@@ -41,7 +43,7 @@ Licensing for commercial use is managed by distributors, not by the UBC-GIF rese
 Installing MTZTEM
 -----------------
 
-There is no automatic installer currently available for the e3dMT. Please follow the following steps in order to use the software:
+There is no automatic installer currently available for the MTZTEM. Please follow the following steps in order to use the software:
 
    1. Extract all files provided from the given zip-based archive and place them all together in a new folder.
    2. Add this directory as new path to your environment variables.
