@@ -125,18 +125,7 @@ Line Descriptions
 
 .. _mtztem_input_inv_ln10:
 
-    - **Trade-Off Parameter Settings:** Here, the user specifies the protocols for the `trade-off parameter <http://giftoolscookbook.readthedocs.io/en/latest/content/fundamentals/Beta.html>`__ (:math:`\beta` ) between the data misfit and the model objective function. The protocols for the trade-off parameter are specified by three values: *beta_max* (starting :math:`\beta`), *beta_min* (lowest :math:`\beta` before inversion is terminated) and *beta_factor* (fractional decrease in :math:`\beta` each iteration - value between 0 and 1). There are two options for setting the trade-off parameter:
-
-        - use the flag *DEFAULT*. In this case, where :math:`\mathbf{J}` is the sensitivity matrix, :math:`\mathbf{W}` is a linear regularization operator and :math:`\mathbf{r}` is a random vector:
-
-                                .. math::
-                                    \begin{align}
-                                    beta \; start &= 1000 \times \frac{\| Jr \|^2}{\| Wr \|^2} \\
-                                    beta \; end &= 10^{-7} \times beta \; start \\
-                                    beta \; factor &= 0.16681
-                                    \end{align}
-
-        - or enter the values for *beta_start*, *beta_end* and *beta_factor* separated by spaces (example: *1E4 1E-2 0.2* )
+    - **Trade-Off Parameter Settings:** Here, the user specifies the protocols for the trade-off parameter (beta). *beta_start* is the initial value of beta, *beta_end* is the minimum allowable beta the program can use before quitting and *beta_factor* defines the factor by which beta is decreased at each iteration; example “1E4 10 0.2”. The user may also enter “DEFAULT” if they wish to have beta calculated automatically. See theory section for :ref:`cooling schedule<theory_cooling>`.
 
 
 .. _mtztem_input_inv_ln11:

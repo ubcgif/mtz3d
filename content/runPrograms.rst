@@ -23,8 +23,8 @@ Executables
 
 The MTZTEM coding package make use of the following Fortran executables:
 
-    - **ZTEM_MTinv.exe:** A parallelizable inversion code for inverting MT and/or ZTEM data at a multitude of frequencies
-    - **MTfwd.exe:** A forward modeling code for predicting MT data (no ZTEM) at a single frequency
+    - **ZTEM_MT3Dinv.exe:** A parallelizable inversion code for inverting MT and/or ZTEM data at a multitude of frequencies
+    - **MT3Dfwd.exe:** A forward modeling code for predicting MT data (no ZTEM) at a single frequency
     - **blk3cell.exe:** A utility for generating block models on tensor meshes
 
 

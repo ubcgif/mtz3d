@@ -24,9 +24,9 @@ MTZTEM Program Library Content
 
 The program library provides the following codes:
 
-   - **ZTEM_MTinv.exe:** A parallelizable inversion code for inverting MT and/or ZTEM data at a multitude of frequencies
+   - **ZTEM_MT3Dinv.exe:** A parallelizable inversion code for inverting MT and/or ZTEM data at a multitude of frequencies
 
-   - **MTfwd.exe:** A forward modeling code for predicting MT data (no ZTEM) at a single frequency
+   - **MT3Dfwd.exe:** A forward modeling code for predicting MT data (no ZTEM) at a single frequency
 
    - **blk3cell.exe:** A utility for generating block models on tensor meshes
 
