@@ -3,7 +3,7 @@
 Running the programs
 ====================
 
-This section provides describes how to run all executables pertaining to the MTZTEM package.
+This section provides describes how to run all executables pertaining to the MTZ3D package.
 
 .. note::
 
@@ -21,10 +21,9 @@ Executables
 
 .. important:: Although described here, this generation of the code may not be supported by GIFtools in the future.
 
-The MTZTEM coding package make use of the following Fortran executables:
+The MTZ3D coding package make use of the following Fortran executables:
 
-    - **ZTEM_MT3Dinv.exe:** A parallelizable inversion code for inverting MT and/or ZTEM data at a multitude of frequencies
-    - **MT3Dfwd.exe:** A forward modeling code for predicting MT data (no ZTEM) at a single frequency
+    - **ZTEM_MT3Dinv.exe:** A code for forward modeling or inverting natural source EM data
     - **blk3cell.exe:** A utility for generating block models on tensor meshes
 
 

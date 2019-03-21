@@ -1,14 +1,12 @@
 .. _overview:
 
-MTZTEM package overview
-=======================
-
-.. note:: Henceforth the natural source tensor EM codes will be referred to as the *MTZTEM* package. Other previously used names for the same codes include *MT3D* and *MTZ3D*.
+MTZ3D package overview
+======================
 
 Description
 -----------
 
-The MTZTEM package is primarily designed to recover conductivity models on 3D tensor meshes through the inversion of magnetotelluric (MT) and/or Z-axis tipper EM (ZTEM) data. If necessary, this package can also be used to forward model both MT and ZTEM data. The data to be inverted can be either the elements of the impedance tensor, the associated apparent resistivities and phases, or elements of magnetivariational transfer functions (Tippers). The inversion program can be run from the command line under LINUX, or MS-Windows or, in the MS Windows environment, using a graphical user interface (GUI). The UBC-GIF utility MeshTools3D is used to examine resulting 3D conductivity models.
+The MTZ3D package is primarily designed to recover conductivity models on 3D tensor meshes through the inversion of magnetotelluric (MT) and/or Z-axis tipper EM (ZTEM) data. If necessary, this package can also be used to forward model both MT and ZTEM data. The data to be inverted can be either the elements of the impedance tensor, the associated apparent resistivities and phases, or elements of magnetivariational transfer functions (Tippers). The inversion program can be run from the command line under LINUX, or MS-Windows or, in the MS Windows environment, using a graphical user interface (GUI). The UBC-GIF utility MeshTools3D is used to examine resulting 3D conductivity models.
 
 As of 2010, the code has been updated to work with transfer function data, along with impedance MT data and furthermore, the code has been parallelized with open MP and MPI. MPI parallelization was used for variety of frequency data and will be discussed below in greater detail, while open MP parallelization is used for two orthogonal source polarization directions for each frequency. Hence, for the frequency-based parallelization, the number of processors defined under MPI settings can not exceed the number of frequencies described in the data file. Each of these frequency-oriented processes will be further split up in two source polarization threads using the open MP environment.
 
@@ -19,19 +17,14 @@ The initial research underlying this program library was funded principally by t
 Since then, improvements have been implemented as time and resources permit.
 
 
-MTZTEM Program Library Content
-------------------------------
+MTZ3D Program Library Content
+-----------------------------
 
 The program library provides the following codes:
 
-   - **ZTEM_MT3Dinv.exe:** A parallelizable inversion code for inverting MT and/or ZTEM data at a multitude of frequencies
-
-   - **MT3Dfwd.exe:** A forward modeling code for predicting MT data (no ZTEM) at a single frequency
+   - **ZTEM_MT3Dinv.exe:** A code for forward modeling or inverting natural source EM data
 
    - **blk3cell.exe:** A utility for generating block models on tensor meshes
-
-
-.. note:: To forward model MT and/or ZTEM data at a multitude of frequencies, simply run the inversion code and terminate after data are predicted for the starting model
 
 
 Licensing
@@ -40,10 +33,10 @@ Licensing
 Licensing for commercial use is managed by distributors, not by the UBC-GIF research group.
 
 
-Installing MTZTEM
+Installing MTZ3D
 -----------------
 
-There is no automatic installer currently available for the MTZTEM. Please follow the following steps in order to use the software:
+There is no automatic installer currently available for the MTZ3D. Please follow the following steps in order to use the software:
 
    1. Extract all files provided from the given zip-based archive and place them all together in a new folder.
    2. Add this directory as new path to your environment variables.

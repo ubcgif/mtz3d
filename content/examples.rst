@@ -3,7 +3,7 @@
 Examples
 ========
 
-Here, the program libraries for MTZTEM will be used to:
+Here, the program libraries for MTZ3D will be used to:
 
      - generate a tensor model
      - predict MT data for a synthetic model
