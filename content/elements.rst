@@ -35,8 +35,7 @@ Here, we describe the formats of supplementary files used to run MTZ3D executabl
 .. toctree::
     :maxdepth: 1
 
-    Survey/Locations File <files/locationsFile>
-    Observations File <files/obsFile>
+    Observations/Locations File <files/obsFile>
     Predicted Data (ZTEM_MT3Dinv) <files/preFileINV>
     Topography File <files/topoFile>
     Tensor Mesh File <files/tensor_mesh>

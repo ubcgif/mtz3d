@@ -1,4 +1,4 @@
-.. _e3dmt_input_model:
+.. _mtztem_blk3cell_input:
 
 Create Model Input File
 =======================

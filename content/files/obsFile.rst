@@ -1,9 +1,9 @@
 .. _obsFile:
 
-Observation File
-================
+Observations/Locations File
+===========================
 
-The observation file contains all necessary survey information for running the inversion, including: data type, observation locations, frequencies, data and uncertainties. 
+The locations file contains all necessary survey information for forward modeling and the observations file contains all necessary survey information for running the inversion. This information includes the data type, observation locations, frequencies, data and uncertainties. 
 
 .. note::
     - Bolded entries are fixed flags recognized by the Fortran codes and blue hyperlinked entries are values/regular expressions specified by the user
@@ -15,7 +15,7 @@ MT or ZTEM data
 If only MT, ZTEM or apparent resistivity and phase data are being inverted, the observation file is formatted as follows:
 
 | **DATATYPE** :math:`\;` :ref:`A<e3dmt_obs_ln1>`
-| **!IGNORE** :math:`\;` :ref:`B<e3dmt_obs_ln2>`
+| **IGNORE** :math:`\;` :ref:`B<e3dmt_obs_ln2>`
 |
 | :ref:`C<e3dmt_obs_ln3>`
 | :ref:`D<e3dmt_obs_ln4>`
@@ -114,6 +114,17 @@ Parameter Descriptions
 
 Data Arrays by Type
 -------------------
+
+Locations
+^^^^^^^^^
+
+If forward modeling is being performed, only the (x,y,z) locations are required in each data array, regardless of the data type (MTZ, MTR, MTT, MTB). The data array in this case is N X 3 and each row is formatted as follows:
+
+.. math::
+    | \; x \; | \; y \; | \; z \; |
+
+where :math:`x` is Easting, :math:`y` is Northing and :math:`z` is elevation.
+
 
 MT impedance data (DATATYPE = MTZ):
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

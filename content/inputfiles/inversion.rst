@@ -3,6 +3,8 @@
 Inversion Input File
 ====================
 
+.. important:: Both the forward and inverse problems are solved using the **ZTEM_MTinv** executable program. In both cases, the lines of the input file are the same. However in the case of forward modeling, some lines in the input file are not used by the code and can be given any value.
+
 The lines of input file for **ZTEM_MTinv.exe** are as follows:
 
 .. tabularcolumns:: |L|C|C|
@@ -14,9 +16,9 @@ The lines of input file for **ZTEM_MTinv.exe** are as follows:
 +--------+--------------------------------------------------------------------+-------------------------------------------------------------------+
 | 2      | :ref:`Background conductivity<mtztem_input_inv_ln2>`               | set background conductivity for                                   |
 +--------+--------------------------------------------------------------------+-------------------------------------------------------------------+
-| 3      | :ref:`Observation file<mtztem_input_inv_ln3>`                      | path to observations file                                         |
+| 3      | :ref:`Survey file<mtztem_input_inv_ln3>`                           | path to observations/locations file                               |
 +--------+--------------------------------------------------------------------+-------------------------------------------------------------------+
-| 4      | :ref:`Initial model<mtztem_input_inv_ln4>`                         | initial model                                                     |
+| 4      | :ref:`Initial/FWD model<mtztem_input_inv_ln4>`                     | initial model                                                     |
 +--------+--------------------------------------------------------------------+-------------------------------------------------------------------+
 | 5      | :ref:`Reference model<mtztem_input_inv_ln5>`                       | reference model                                                   |
 +--------+--------------------------------------------------------------------+-------------------------------------------------------------------+
@@ -57,7 +59,7 @@ The lines of input file for **ZTEM_MTinv.exe** are as follows:
      :align: center
      :width: 700
 
-     Example input file for the inversion program (`Download <https://github.com/ubcgif/mtztem/raw/master/assets/input_files1/mtztem_octree_inv.inp>`__ ).
+     Example input file for the inversion program (`Download <https://github.com/ubcgif/mtz3d/raw/master/assets/input_files1/mtztem_octree_inv.inp>`__ ).
 
 
 Line Descriptions
@@ -76,14 +78,17 @@ Line Descriptions
 
 .. _mtztem_input_inv_ln3:
 
-    - **Observation File:** file path to the :ref:`observed data file<obsFile>`
+    - **Survey File:** file path to the :ref:`observations/locations file<obsFile>`.
 
 .. _mtztem_input_inv_ln4:
 
-    - **Initial Model:** 
+    - **Initial/FWD Model:** On this line we specify either the starting model for the inversion or the conductivity model for the forward modeling. On this line, there are 3 possible options:
 
-        - The user may supply the file path to an initial :ref:`conductivity model<modelFile>`.
+        - If the program is being used to forward model data, the flag ‘FWDMODEL’ is entered followed by the path to the conductivity model.
+        - If the program is being used to invert data, only the path to a :ref:`conductivity model<modelFile>` is required; e.g. inversion is assumed unless otherwise specified.
         - If a homogeneous conductivity value is being used for all active cells, the user can enter the value in S/m.
+
+.. important:: If data are only being forward modeled, only the :ref:`background susceptibility model <mtztem_input_inv_ln6>`, :ref:`topography <mtztem_input_inv_ln7>`, :ref:`fortol <mtztem_input_inv_ln19>` and :ref:`bicg solver parameters <mtztem_input_inv_ln20>` are required. **However**, the remaining fields must not be empty and must have correct syntax for the code to run.
 
 .. _mtztem_input_inv_ln5:
 
