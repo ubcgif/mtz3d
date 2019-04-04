@@ -1,9 +1,9 @@
 .. _preFileINV:
 
-Predicted Data (ZTEM_MTinv)
-===========================
+Predicted Data
+==============
 
-The predicted data files are output from **ZTEM_MT3Dinv.exe** and contain the locations and predicted field data. The order of the data points are the same as the :ref:`observations file <obsFile>`. Each block, separated by a blank line, are the data for a particular transmitter/frequency. Thus predicted data files take the format (unless joing MT and ZTEM):
+The predicted data files are output from **ZTEM_MT3Dinv.exe** and contain the locations and predicted field data. The order of the data points are the same as the :ref:`observations file <obsFile>`. Each block, separated by a blank line, are the data for a particular transmitter/frequency. Thus predicted data files take the format (unless joint MT and ZTEM):
 
 |
 | **Data Array 1**

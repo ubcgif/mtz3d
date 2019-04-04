@@ -3,7 +3,7 @@
 Inversion Input File
 ====================
 
-.. important:: Both the forward and inverse problems are solved using the **ZTEM_MTinv** executable program. In both cases, the lines of the input file are the same. However in the case of forward modeling, some lines in the input file are not used by the code and can be given any value.
+.. important:: Both the forward and inverse problems are solved using the **ZTEM_MTinv.exe** executable program. In both cases, the lines of the input file are the same. However in the case of forward modeling, some lines in the input file are not used by the code and can be given any value.
 
 The lines of input file for **ZTEM_MTinv.exe** are as follows:
 
@@ -67,7 +67,7 @@ Line Descriptions
 
 .. _mtztem_input_inv_ln1:
 
-    - **Tensor Mesh:** file path to the OcTree mesh file
+    - **Tensor Mesh:** file path to a :ref:`tensor mesh <tensorFile>` file
 
 .. _mtztem_input_inv_ln2:
 
@@ -107,7 +107,7 @@ Line Descriptions
 
 .. _mtztem_input_inv_ln7:
 
-    - **Topography:** Here, the user can choose to specify the cells which lie below the surface topography. Cells above the surface topography are given a value of :math:`\sigma = 10^{-8}` S/m and :math:`\chi=0` SI in the inversion. To set the topography, the user may:
+    - **Topography:** Here, the user can choose to specify the cells which lie below the surface topography. Cells above the surface topography are given a value of :math:`\sigma = 10^{-8}` S/m and :math:`\chi=0` SI during forward modeling or inversion. To set the topography, the user may:
 
         - use the flag *TOPO_FILE* followed by the file path to a :ref:`topography file<topoFile>`
         - use the flag *TOPO_CONST* followed by the value in meters if a constant elevation is being used

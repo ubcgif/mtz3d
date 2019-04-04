@@ -5,7 +5,6 @@ Model File
 
 For a given mesh, the bounds file has the following 2 column format:
 
-
 |
 | :math:`LB_{1,1,1} \;\;\;\;\;\; UB_{1,1,1}`
 | :math:`LB_{1,1,2} \;\;\;\;\;\; UB_{1,1,2}`

@@ -47,7 +47,7 @@ Joint MT and ZTEM data
 If joint MT and ZTEM data are being inverted, the observation file is formatted as follows:
 
 | **DATATYPE** :math:`\;` :ref:`A<e3dmt_obs_ln1>`
-| **!IGNORE** :math:`\;` :ref:`B<e3dmt_obs_ln2>`
+| **IGNORE** :math:`\;` :ref:`B<e3dmt_obs_ln2>`
 |
 | :ref:`Cmt<e3dmt_obs_ln3>`
 | :ref:`Dmt<e3dmt_obs_ln4>`

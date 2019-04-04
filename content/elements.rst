@@ -36,7 +36,7 @@ Here, we describe the formats of supplementary files used to run MTZ3D executabl
     :maxdepth: 1
 
     Observations/Locations File <files/obsFile>
-    Predicted Data (ZTEM_MT3Dinv) <files/preFileINV>
+    Predicted Data <files/preFileINV>
     Topography File <files/topoFile>
     Tensor Mesh File <files/tensor_mesh>
     Model File <files/model>
