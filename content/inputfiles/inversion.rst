@@ -24,7 +24,7 @@ The lines of input file for **ZTEM_MTinv.exe** are as follows:
 +--------+--------------------------------------------------------------------+-------------------------------------------------------------------+
 | 6      | :ref:`Background susceptibility <mtztem_input_inv_ln6>`            | background susceptibility model                                   |
 +--------+--------------------------------------------------------------------+-------------------------------------------------------------------+
-| 7      | :ref:`Topography<mtztem_input_inv_ln7>`                            | topography/active cells                                           |
+| 7      | :ref:`Active model<mtztem_input_inv_ln7>`                          | sets active cells in inversion                                    |
 +--------+--------------------------------------------------------------------+-------------------------------------------------------------------+
 | 8      | :ref:`Bounds<mtztem_input_inv_ln8>`                                | upper and lower bounds for cells                                  |
 +--------+--------------------------------------------------------------------+-------------------------------------------------------------------+
@@ -107,11 +107,13 @@ Line Descriptions
 
 .. _mtztem_input_inv_ln7:
 
-    - **Topography:** Here, the user can choose to specify the cells which lie below the surface topography. Cells above the surface topography are given a value of :math:`\sigma = 10^{-8}` S/m and :math:`\chi=0` SI during forward modeling or inversion. To set the topography, the user may:
+    - **Active Model:** Here, the user can choose to specify the cells which are active in forward modeling and inversion. To set the active cells, there are 3 options:
 
+        - use the flag *TOPO_CONST* followed by the value in meters if the active cells lie below a flat topography
         - use the flag *TOPO_FILE* followed by the file path to a :ref:`topography file<topoFile>`
-        - use the flag *TOPO_CONST* followed by the value in meters if a constant elevation is being used
         - use the flag *MNZ* followed by the file path to an :ref:`active cells model file<modelActiveFile>`
+
+.. important:: If *TOPO_CONST* or *TOPO_FILE* options are used, then all cell lying above surface topography are given physical property values of :math:`\sigma = 10^{-8}` S/m and :math:`\chi=0` SI during forward modeling or inversion. If *MNZ* is used, the inactive cells (0 in the active model) are set to the values of the reference model.
 
 .. _mtztem_input_inv_ln8:
 
