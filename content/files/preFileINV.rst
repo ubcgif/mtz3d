@@ -67,7 +67,7 @@ and similarly for :math:`y`.
 
 .. important::
 
-	- For **MTT data**, the first line of each data array within the :ref:`observations file<obsFile>` contains the base/reference station location with the remaining columns flagged. As a result, if a data array contains :math:`N` rows within the observations file, the associated array within the predicted data file will have :math:`N-1` rows.
+	- For **MTT data**, the first line of each data array within the :ref:`observations/locations file<obsFile>` contains the base/reference station location. When forward modeling, the first line of each data array in the predicted data file will contain the location of the base station and fields predicted at the base station. When inverting, the predicted data file will also contain lines associated with the base station, however the program returns *nan* for the field values.
 
 
 Joint MT and ZTEM Data (DATATYPE = MTB)
