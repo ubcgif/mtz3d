@@ -229,13 +229,13 @@ where :math:`\mathbf{\tilde{u}_e}` is the electric field for the 1D solution pol
 
 such that :math:`\mathbf{L}` is the Laplacian operator, :math:`\mu_0` is the permeability of free-space and :math:`\tilde{\sigma}` is a 1D conductivity model. The right-hand side :math:`\mathbf{\tilde{q}}` is a vector of zeros except for :math:`\tilde{q}_1`. A Dirichlet condition is imposed by setting :math:`A_{11} = 1` and :math:`\tilde{q}_1 = i\omega \mu_0 h^{-1}`; where :math:`h` is the layer thickness. Once Eq. :eq:`wave_eq_1d` is solved for a particular frequency, the solution is transferred to the edges of an tensor mesh. If the electric field is polarized along the x direction, there are no electric fields along y or z; similarly for a solution polarized along the y direction. 
 
-Let :math:`\mathbf{u_s}` and :math:`\sigma_s` be the electric fields and 1D conductivity model transferred to the edges of the tensor mesh, respectively. Then the source term in Eq. :eq:`discrete_e_sys` is computed for a given frequency and polarization using:
+Let :math:`\mathbf{u_s}` and :math:`\sigma_s` be the electric fields and 1D conductivity model transferred to the edges of the tensor mesh, respectively. Then the source term in Eq. *discrete e sys* is computed for a given frequency and polarization using:
 
 .. math::
     \frac{1}{i\omega} \mathbf{A u_s} = \mathbf{s}
 
 
-where :math:`\mathbf{A}` is similar to expression :eq:`A_operator`, except the mass matrix :math:`\mathbf{M_\sigma}` is formed using the transferred conductivity :math:`\sigma_s`.
+where :math:`\mathbf{A}` is similar to expression *A operator*, except the mass matrix :math:`\mathbf{M_\sigma}` is formed using the transferred conductivity :math:`\sigma_s`.
 
 
 
@@ -483,7 +483,7 @@ where :math:`\mathbf{\delta m}_k` is the step direction, :math:`\nabla \phi_k` i
 Gauss-Newton Solve
 ~~~~~~~~~~~~~~~~~~
 
-Here we discuss the details of solving Eq. :eq:`GN_gen` for a particular Gauss-Newton iteration :math:`k`. Using the data misfit from Eq. :eq:`data_misfit` and the model objective function from Eq. :eq:`MOF`, we must solve:
+Here we discuss the details of solving Eq. :eq:`GN_gen` for a particular Gauss-Newton iteration :math:`k`. Using the data misfit from Eq. :eq:`data_misfit_2` and the model objective function from Eq. :eq:`MOF`, we must solve:
 
 .. math::
     \Big [ \mathbf{J^T W_d^T W_d J + \beta \mathbf{W^T W}} \Big ] \mathbf{\delta m}_k =

@@ -55,11 +55,11 @@ The lines of input file for **ZTEM_MTinv.exe** are as follows:
 
 
 
-.. figure:: images/create_inv_input.png
-     :align: center
-     :width: 700
+.. .. figure:: images/create_inv_input.png
+..      :align: center
+..      :width: 700
 
-     Example input file for the inversion program (`Download <https://github.com/ubcgif/mtz3d/raw/master/assets/input_files1/mtztem_octree_inv.inp>`__ ).
+..      Example input file for the inversion program (`Download <https://github.com/ubcgif/mtz3d/raw/master/assets/input_files1/mtztem_octree_inv.inp>`__ ).
 
 
 Line Descriptions
