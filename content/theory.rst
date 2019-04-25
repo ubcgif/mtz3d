@@ -436,9 +436,9 @@ If the user chooses the *DEFAULT* options, then we let:
 
 .. math::
     \begin{align}
-        \textrm{beta_factor} &= 0.16681 \\
-        \textrm{beta_start} &= 1000 \times \dfrac{\| \mathbf{Jr} \|^2}{\| \mathbf{Wr} \|^2} \\
-        \textrm{beta_end} &= 10^{-7} \times \textrm{beta_start} 
+        beta \_ factor &= 0.16681 \\
+        beta \_ start &= 1000 \times \dfrac{\| \mathbf{Jr} \|^2}{\| \mathbf{Wr} \|^2} \\
+        beta \_ end &= 10^{-7} \times beta \_ start 
     \end{align}
 
 .. _theory_GN:
