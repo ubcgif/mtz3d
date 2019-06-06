@@ -1,0 +1,20 @@
+tensor_mesh.txt                 ! mesh file
+0.01                            ! background conductivity
+MTsurvey.loc                    ! Locations file
+FWDMODEL 3Dmodel.con            ! model file
+0.01                            ! reference model
+NO_SUS                          ! NO_SUS | filepath
+TOPO_CONST 0                    ! TOPO_CONST val | TOPO_FILE filepath | MNZ act_mod_path
+BOUNDS_NONE                     ! BOUNDS_NONE | BOUNDS_CONST lb ul | BOUNDS_FILE filepath 
+NONE                            ! weighting
+DEFAULT                         ! DEFAULT | beta_start beta_end beta_factor 
+1 1 1 1                         ! alpha_s alpha_x alpha_y alpha_z
+CHANGE_MREF                     ! CHANGE_MREF | NOT_CHANGE_MREF                
+SMOOTH_MOD                      ! SMOOTH_MOD | SMOOTH_MOD_DIF
+USE_LOG_COND                    ! USE_LOG_COND | USE_RES
+1                               ! chifact
+0                               ! method (use 0)
+0.01 0.001 3                    ! tol_nl, mindm, nit
+0.01 10                         ! intol, max_linit
+1e-09 1e-05                     ! fortol, inintol
+20 0.01 0.01                    ! max_it_bicg, droptol, droptol_WTW
