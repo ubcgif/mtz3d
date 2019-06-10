@@ -7,12 +7,12 @@ NO_SUS                               ! NO_SUS | filepath
 TOPO_CONST 0                         ! TOPO_CONST val | TOPO_FILE filepath | MNZ act_mod_path
 BOUNDS_NONE                          ! BOUNDS_NONE | BOUNDS_CONST lb ul | BOUNDS_FILE filepath 
 NONE                                 ! weighting
-1 0.0001 0.2                         ! DEFAULT | beta_start beta_end beta_factor 
+1 1e-6 0.2                           ! DEFAULT | beta_start beta_end beta_factor 
 4e-06 1 1 4                          ! alpha_s alpha_x alpha_y alpha_z
 CHANGE_MREF                          ! CHANGE_MREF | NOT_CHANGE_MREF                
 SMOOTH_MOD_DIF                       ! SMOOTH_MOD | SMOOTH_MOD_DIF
 USE_LOG_COND                         ! USE_LOG_COND | USE_RES
-0.1                                  ! chifact
+1                                    ! chifact
 0                                    ! method (use 0)
 0.01 0.001 3                         ! tol_nl, mindm, nit
 0.01 20                              ! intol, max_linit

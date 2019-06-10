@@ -59,7 +59,7 @@ The lines of input file for **ZTEM_MTinv.exe** are as follows:
      :align: center
      :width: 700
 
-     Example input file for the inversion (`Download <https://github.com/ubcgif/mtz3d/raw/master/assets/input_files/inv/mt3dinv.inp>`__ ). Example input file for the forward modeling (`Download <https://github.com/ubcgif/mtz3d/raw/master/assets/input_files/fwd/mt3dinv.inp>`__ ).
+     Example input file for the inversion (`Download <https://github.com/ubcgif/mtztem/raw/master/assets/input_files/inv/mt3dinv.inp>`__ ). Example input file for the forward modeling (`Download <https://github.com/ubcgif/mtztem/raw/master/assets/input_files/fwd/mt3dinv.inp>`__ ).
 
 
 Line Descriptions

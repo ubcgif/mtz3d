@@ -30,7 +30,7 @@ where superscript :math:`(i)` for :math:`i=1,2,...,N` refers to a particular blo
      :align: center
      :width: 700
 
-     Example input file for blk3cell (`Download <https://github.com/ubcgif/e3dmt/raw/master/assets/input_files/model/blk3cell.inp>`__ )
+     Example input file for blk3cell (`Download <https://github.com/ubcgif/mtztem/raw/master/assets/input_files/model/blk3cell.inp>`__ )
 
 
 
