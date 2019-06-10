@@ -19,7 +19,7 @@ The tensor mesh and conductivity model are shown below. The model consists of an
 
 .. figure:: images/model.png
      :align: center
-     :width: 500
+     :width: 700
 
 
 
