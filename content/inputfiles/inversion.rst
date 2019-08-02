@@ -3,9 +3,9 @@
 Inversion Input File
 ====================
 
-.. important:: Both the forward and inverse problems are solved using the **ZTEM_MTinv.exe** executable program. In both cases, the lines of the input file are the same. However in the case of forward modeling, some lines in the input file are not used by the code and can be given any value. **The input file for forward modeling and inversion must be given the name mt3dinv.inp!!!**
+.. important:: Both the forward and inverse problems are solved using the **mtz3d.exe** executable program. In both cases, the lines of the input file are the same. However in the case of forward modeling, some lines in the input file are not used by the code and can be given any value. **The input file for forward modeling and inversion must be given the name mt3dinv.inp!!!**
 
-The lines of input file for **ZTEM_MTinv.exe** are as follows:
+The lines of input file for **mtz3d.exe** are as follows:
 
 .. tabularcolumns:: |L|C|C|
 

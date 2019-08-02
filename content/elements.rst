@@ -8,10 +8,13 @@ This section provides a brief description of each program in the MTZ3D library. 
 Introduction
 ------------
 
-The MTZ3D package makes use of the following executables:
+The program library provides the following codes:
 
-        - **ZTEM_MT3Dinv:** A code for forward modeling or inverting natural source EM data
-        - **blk3cell:** Creates models from a set of blocks on a tensor mesh
+   - **mtz3d.exe:** A code for forward modeling or inverting natural source EM data
+
+Utility codes relevant to this package include:
+
+   - **blk3cell.exe:** A utility for generating block models on tensor meshes
 
 
 Main Input Files
@@ -29,7 +32,7 @@ Here, we describe the main input files for executables contained with the MTZ3D 
 General Files for MTZ3D Executables
 ------------------------------------
 
-Here, we describe the formats of supplementary files used to run MTZ3D executable files. The input files for each executable program are described in the :ref:`running the programs<running>` section.
+Here, we describe the formats of supplementary files used to run MTZ3D. The input files for each executable program are described in the :ref:`running the programs<running>` section.
 
 
 .. toctree::

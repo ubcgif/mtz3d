@@ -21,10 +21,13 @@ Executables
 
 .. important:: Although described here, this generation of the code may not be supported by GIFtools in the future.
 
-The MTZ3D coding package make use of the following Fortran executables:
+The program library provides the following codes:
 
-    - **ZTEM_MT3Dinv.exe:** A code for forward modeling or inverting natural source EM data
-    - **blk3cell.exe:** A utility for generating block models on tensor meshes
+   - **mtz3d.exe:** A code for forward modeling or inverting natural source EM data
+
+Utility codes relevant to this package include:
+
+   - **blk3cell.exe:** A utility for generating block models on tensor meshes
 
 
 Contents

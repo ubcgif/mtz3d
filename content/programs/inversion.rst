@@ -3,12 +3,12 @@
 Inversion Program
 =================
 
-Both the forward and inverse problems are solved using the **ZTEM_MT3Dinv** executable program. In each case, format of the input file (denoted here as **mt3dinv.inp**) is the same. In the case of forward modeling however, some lines in the input file are omitted.
+Both the forward and inverse problems are solved using the **mtz3d** executable program. In each case, format of the input file (denoted here as **mt3dinv.inp**) is the same. In the case of forward modeling however, some lines in the input file are omitted.
 
 Running the Program
 -------------------
 
-A basic way of running inversion is done by opening a command line window and typing the path to the code **ZTEM_MT3Dinv.exe**, followed by a space, followed by the path to the input file named **mt3dinv.inp**.
+A basic way of running inversion is done by opening a command line window and typing the path to the code **mtz3d.exe**, followed by a space, followed by the path to the input file named **mt3dinv.inp**.
 
 .. figure:: images/mtztem_run_inv.png
     :align: center
@@ -54,7 +54,7 @@ Units:
 Output Files
 ------------
 
-The program **ZTEM_MT3Dinv.exe** creates the following output files:
+The program **mtz3d.exe** creates the following output files:
 
     - **inv.con:** final conductivity model
     - **inv_xx.con:** recovered model at iteration *xx*
@@ -62,8 +62,8 @@ The program **ZTEM_MT3Dinv.exe** creates the following output files:
     - **dpred_0.txt:** predicted data for each recovered conductivity model
     - **dpred_xx.txt:** predicted data for recovered model *xx*
     - **dpred.txt:** predicted data from final conductivity model
-    - **mt3dinv.log:** log file for the inversion
-    - **mt3dinv.out:** output file showing progress of the inversion
+    - **mtz3d.log:** log file for the inversion
+    - **mtz3d.out:** output file showing progress of the inversion
 
 
 
