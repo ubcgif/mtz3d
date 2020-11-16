@@ -18,7 +18,7 @@ The full examples are parse into 3 sections:
 .. toctree::
     :maxdepth: 2
 
-    Create octree model <example/create_model>
+    Create tensor model <example/create_model>
     Forward modeling <example/fwd>
     Inversion <example/inv>
 
