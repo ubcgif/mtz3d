@@ -35,10 +35,11 @@ sys.path.append(os.path.abspath('./_ext'))
 extensions = [
     'sphinx.ext.mathjax',
     'sphinxcontrib.bibtex',
-        'edit_on_github',
-    'purpose',
-    'example',
+    'edit_on_github'
 ]
+
+# Basic config for bibtext
+bibtex_bibfiles = ['references.bib']
 
 # Number figures
 numfig = True
