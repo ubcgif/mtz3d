@@ -23,11 +23,12 @@ Main Input Files
 Here, we describe the main input files for executables contained with the MTZ3D coding package.
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
 
     Create octree model <inputfiles/createModel>
     Forward modeling <inputfiles/forward>
     Inversion <inputfiles/inversion>
+    
 
 General Files for MTZ3D Executables
 ------------------------------------
