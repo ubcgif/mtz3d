@@ -5,9 +5,10 @@ Examples
 
 Here, the program libraries for MTZ3D will be used to:
 
-     - generate a model on a tensor mesh
-     - predict MT data for a synthetic model
-     - invert MT data created using our synthetic model
+  - generate a model on a tensor mesh
+  - predict MT data for a synthetic model
+  - invert MT data created using our synthetic model
+
 
 Zip folders containing all necessary files can be downloaded here:
 

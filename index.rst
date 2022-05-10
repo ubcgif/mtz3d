@@ -16,15 +16,15 @@ Highlights of MTZ3D
 
 Highlights of MTZ3D include:
 
-    - the ability to model both magnetotelluric impedance data and Z-axis tipper data
-    - the ability to forward model and invert surface or airborne data in 3D
-    - the ability to set tolerances for iterative solvers
+  - the ability to model both magnetotelluric impedance data and Z-axis tipper data
+  - the ability to forward model and invert surface or airborne data in 3D
+  - the ability to set tolerances for iterative solvers
 
 
 Contents
 ^^^^^^^^
 
- The contents of this manual are as follows:
+The contents of this manual are as follows:
 
 .. toctree::
     :numbered:
