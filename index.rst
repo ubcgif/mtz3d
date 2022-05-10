@@ -4,11 +4,11 @@ MTZ3D package
 
 MTZ3D is a program library for carrying out forward modelling and inversion of magnetotelluric and Z-axis tipper EM data.
 
-.. figure:: content/images/title_image.PNG
-     :align: center
-     :width: 700
+.. figure:: content/images/title_image.png
+    :align: center
+    :width: 700
 
-     True model, magnetotelluric data and the recovered model.
+    True model, magnetotelluric data and the recovered model.
 
 
 Highlights of MTZ3D
